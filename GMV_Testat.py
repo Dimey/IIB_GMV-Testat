@@ -31,6 +31,7 @@ class GMVTestat(QtWidgets.QMainWindow):
         box.setWindowTitle('Fehler: Falscher Dateiname.')
         box.setText(f'Bitte wähle die {listtyp}-Liste aus!\n\nHinweis:\nDer Dateiname (inkl. Pfad) muss \'{listtyp}\' enthalten.\nDie Groß-/Kleinschreibung ist dabei unerheblich.')
         box.exec()
+        # hallo
 
     def zeigeLadenHaken(self, button):
         QtWidgets.QPushButton.setText(button, u'Laden \u2714')
