@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets
+#from PyQt5 import QtWidgets
 
 class TestatController():
     def __init__(self, model, view):
@@ -21,7 +21,9 @@ class TestatController():
     def connectSignals(self):
         self.view.TucanListeLaden_btn.clicked.connect(self.oeffneTucanListe)
         self.view.MoodleListeLaden_btn.clicked.connect(self.oeffneMoodleListe)
+        self.view.BatchImportKpLaden_btn.clicked.connect(self.oeffneKPOrdner)
 
+    # TODO: Parametrisieren
     def oeffneTucanListe(self):
         try:
             filename = self.view.fileDialog('xlsx')
@@ -51,3 +53,9 @@ class TestatController():
                 self.view.falscheListeFenster('Moodle')  
         except:
             print('Die MoodleListe konnte nicht geladen werden.')
+
+    def oeffneKPOrdner(self):
+        path = self.view.folderDialog()
+        if path:
+            self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
+            self.model.ladeBatch()

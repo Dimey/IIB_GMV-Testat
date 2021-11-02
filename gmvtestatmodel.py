@@ -21,5 +21,3 @@ class TestatData():
         teilnehmerliste = teilnehmerliste.reindex(columns = columns_titles)
         teilnehmerliste[['Punkte','Bestanden']] = ''
         self.bewertungsuebersicht = teilnehmerliste
-
-

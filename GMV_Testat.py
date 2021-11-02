@@ -19,6 +19,9 @@ class GMVTestat(QtWidgets.QMainWindow):
     def fileDialog(self, ext):
         return QtWidgets.QFileDialog.getOpenFileName(self, f'Öffne die {ext}-Datei', filter = f'{ext}-Dateien (*.{ext}) ;; Alle Dateien (*)')
 
+    def folderDialog(self):
+        return QtWidgets.QFileDialog.getExistingDirectory(self, caption='Öffne den Ordner mit den Moodle-Abgaben')
+
     def zeigeBewertungsUebersicht(self, bewertungsuebersicht):
         self.BewertungsUebersicht_table.setRowCount(bewertungsuebersicht.shape[0])
         bewertungsuebersichtArray = bewertungsuebersicht.to_numpy()
@@ -31,10 +34,9 @@ class GMVTestat(QtWidgets.QMainWindow):
         box.setWindowTitle('Fehler: Falscher Dateiname.')
         box.setText(f'Bitte wähle die {listtyp}-Liste aus!\n\nHinweis:\nDer Dateiname (inkl. Pfad) muss \'{listtyp}\' enthalten.\nDie Groß-/Kleinschreibung ist dabei unerheblich.')
         box.exec()
-        # hallo
 
     def zeigeLadenHaken(self, button):
-        QtWidgets.QPushButton.setText(button, u'Laden \u2714')
+        QtWidgets.QPushButton.setText(button, u'Laden \u2705')
 
     def zeigeAnzahl(self, label, liste):
         QtWidgets.QLabel.setText(label, f'{liste.shape[0]}')
