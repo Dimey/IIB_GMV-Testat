@@ -26,8 +26,8 @@ class TestatData():
 
     def ladeBatch(self, path):
         konstruktionsprotokolleListe = []
-        for foldername in os.listdir(path):
-            if not foldername.startswith('.'):
+        for foldername in os.listdir(path): # Iteriere über Studenten-Ordner
+            if not foldername.startswith('.'): # Ignoriere versteckte Dateien
                 for filename in os.listdir(path + foldername):
                     if filename.endswith('html'):
                         kp = pd.read_html(f"{path+foldername}/{filename}")[0].to_numpy()

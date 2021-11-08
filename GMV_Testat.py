@@ -36,7 +36,7 @@ class GMVTestat(QtWidgets.QMainWindow):
         box.exec()
 
     def zeigeLadenHaken(self, button):
-        QtWidgets.QPushButton.setText(button, u'Laden \u2705')
+        QtWidgets.QPushButton.setText(button, u'Laden \u2714')
 
     def zeigeAnzahl(self, label, liste):
         QtWidgets.QLabel.setText(label, f'{liste.shape[0]}')
