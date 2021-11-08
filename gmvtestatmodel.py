@@ -26,21 +26,18 @@ class TestatData():
 
     def ladeBatch(self, path):
         konstruktionsprotokolleListe = []
-        for foldername in os.listdir(path): # Iteriere über Studenten-Ordner
+        for foldername in os.listdir(path): # Iteriere über alle Studenten-Ordner
             if not foldername.startswith('.'): # Ignoriere versteckte Dateien
-                for filename in os.listdir(path + foldername):
+                for filename in os.listdir(f"{path}/{foldername}"):
                     if filename.endswith('html'):
-                        kp = pd.read_html(f"{path+foldername}/{filename}")[0].to_numpy()
-                        konstruktionsprotokolleListe.append(kp)
-                        # verkettete xml erstellen
+                        kp = pd.read_html(f"{path}/{foldername}/{filename}")[0]
+                        # Verkettete xml erstellen
                         # kp.to_xml(f"konstruktionsprotokolle.xml",index=False,root_name=f"id{filename[0:-5]}")
-                        # werte KP aus
+                        # Werte KP aus
+                        # self.bepunkteKP(kp)
                     else:
                         print('Nicht passend.')
-        
-        #kpDF = pd.DataFrame(konstruktionsprotokolleListe)
-        print(konstruktionsprotokolleListe)
 
     def bepunkteKP(self, kp):
         # return: punkte
-        pass
+        pass 

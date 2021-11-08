@@ -1,4 +1,4 @@
-#from PyQt5 import QtWidgets
+from functools import partial
 
 class TestatController():
     def __init__(self, model, view):
@@ -30,7 +30,7 @@ class TestatController():
             if 'tucan' in filename[0].lower():
                 self.model.ladeTucanListe(filename[0])
                 self.view.zeigeLadenHaken(self.view.TucanListeLaden_btn)
-                self.view.zeigeAnzahl(self.view.AnzahlTucanTeilnehmer_label, self.model.tucanliste)
+                self.view.zeigeAnzahl(self.view.AnzahlTucanTeilnehmer_label, self.model.tucanliste.shape[0])
                 if hasattr(self.model, 'moodleliste'):
                     self.model.erstelleBewertungsUebersicht()
                     self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
@@ -45,7 +45,7 @@ class TestatController():
             if 'moodle' in filename[0].lower():
                 self.model.ladeMoodleListe(filename[0])
                 self.view.zeigeLadenHaken(self.view.MoodleListeLaden_btn)
-                self.view.zeigeAnzahl(self.view.AnzahlMoodleTeilnehmer_label, self.model.moodleliste)
+                self.view.zeigeAnzahl(self.view.AnzahlMoodleTeilnehmer_label, self.model.moodleliste.shape[0])
                 if hasattr(self.model, 'tucanliste'):
                     self.model.erstelleBewertungsUebersicht()
                     self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
@@ -57,6 +57,5 @@ class TestatController():
     def oeffneKPOrdner(self):
         path = self.view.folderDialog()
         if path:
-            path += '/'
             self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
             self.model.ladeBatch(path)

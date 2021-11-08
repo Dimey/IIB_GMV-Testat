@@ -17,7 +17,9 @@ class GMVTestat(QtWidgets.QMainWindow):
         pass
 
     def fileDialog(self, ext):
-        return QtWidgets.QFileDialog.getOpenFileName(self, f'Öffne die {ext}-Datei', filter = f'{ext}-Dateien (*.{ext}) ;; Alle Dateien (*)')
+        return QtWidgets.QFileDialog.getOpenFileName(self, 
+            f'Öffne die {ext}-Datei', 
+            filter = f'{ext}-Dateien (*.{ext}) ;; Alle Dateien (*)')
 
     def folderDialog(self):
         return QtWidgets.QFileDialog.getExistingDirectory(self, caption='Öffne den Ordner mit den Moodle-Abgaben')
@@ -32,14 +34,16 @@ class GMVTestat(QtWidgets.QMainWindow):
     def falscheListeFenster(self, listtyp):
         box = QtWidgets.QMessageBox(self)
         box.setWindowTitle('Fehler: Falscher Dateiname.')
-        box.setText(f'Bitte wähle die {listtyp}-Liste aus!\n\nHinweis:\nDer Dateiname (inkl. Pfad) muss \'{listtyp}\' enthalten.\nDie Groß-/Kleinschreibung ist dabei unerheblich.')
+        box.setText(f'Bitte wähle die {listtyp}-Liste aus!\n\n'
+                    f'Hinweis:\nDer Dateiname (inkl. Pfad) muss \'{listtyp}\' enthalten.\n'
+                    f'Die Groß-/Kleinschreibung ist dabei unerheblich.')
         box.exec()
 
     def zeigeLadenHaken(self, button):
-        QtWidgets.QPushButton.setText(button, u'Laden \u2714')
+        button.setText(u'Laden \u2714')
 
-    def zeigeAnzahl(self, label, liste):
-        QtWidgets.QLabel.setText(label, f'{liste.shape[0]}')
+    def zeigeAnzahl(self, label, anzahl):
+        label.setText(f'{anzahl}')
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
