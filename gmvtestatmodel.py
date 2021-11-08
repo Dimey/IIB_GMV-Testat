@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import matplotlib as plt
 
 class TestatData():
     def __init__(self):
