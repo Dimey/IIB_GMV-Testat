@@ -55,7 +55,8 @@ class TestatController():
             print('Die MoodleListe konnte nicht geladen werden.')
 
     def oeffneKPOrdner(self):
-        path = self.view.folderDialog() + '/'
+        path = self.view.folderDialog()
         if path:
+            path += '/'
             self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
             self.model.ladeBatch(path)
