@@ -17,15 +17,19 @@ class TestatData():
         moodleliste = moodleliste.drop('E-Mail-Adresse', axis = 1)
         self.moodleliste = moodleliste
 
-    def erstelleBewertungsUebersicht(self):
+    def erstelleBewertungsUebersichtAusListen(self):
         teilnehmerliste = pd.merge(self.moodleliste,self.tucanliste,on=['Nachname', 'Vorname'])
         columns_titles = ['Matrikelnummer','Nachname','Vorname']
         teilnehmerliste = teilnehmerliste.reindex(columns = columns_titles)
         teilnehmerliste[['Punkte', 'Bestanden', 'Kriterium 1', 'Kriterium 2', 'Kriterium 3', 'Bemerkungen']] = ''
         self.bewertungsuebersicht = teilnehmerliste
 
+    def erstelleBewertungsUebersichtAusJSON(self):
+        pass
+
+
     def speichereBewertungsuebersichtAlsJSON(self):
-        self.bewertungsuebersicht.to_json('Ressources/Testat1_Sicherungsdatei_SensibleDaten.json',index=False,orient="table")
+        self.bewertungsuebersicht.to_json('Ressources/Testat1_Sicherungsdatei_SensibleDaten.json', orient = "split")
 
     def ladeBatch(self, path):
         konstruktionsprotokolleListe = []
@@ -44,3 +48,11 @@ class TestatData():
     def bepunkteKP(self, kp):
         # return: punkte
         pass 
+
+    def erstelleZusammenfassung(self):
+        pass
+
+    def ladeSicherungsDateiJSON(self, pfad):
+        self.sicherungsdatei = pd.read_json(pfad)
+
+

@@ -50,7 +50,7 @@ class TestatController():
                 self.view.zeigeLadenHaken(self.view.MoodleListeLaden_btn)
                 self.view.zeigeAnzahl(self.view.AnzahlMoodleTeilnehmer_label, self.model.moodleliste.shape[0])
                 if hasattr(self.model, 'tucanliste'):
-                    self.model.erstelleBewertungsUebersicht()
+                    self.model.erstelleBewertungsUebersichtAusListen()
                     self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
             else:
                 self.view.falscheListeFenster('Moodle')  
@@ -67,4 +67,9 @@ class TestatController():
         self.model.speichereBewertungsuebersichtAlsJSON()
 
     def ladeSicherungsDatei(self):
+        pfad = self.view.fileDialog('json')
+        self.model.ladeSicherungsDateiJSON(pfad)
+
+    def zeigeZusammenfassung(self):
+        self.model.erstelleZusammenfassung()
         pass
