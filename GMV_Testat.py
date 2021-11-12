@@ -29,7 +29,8 @@ class GMVTestat(QtWidgets.QMainWindow):
         bewertungsuebersichtArray = bewertungsuebersicht.to_numpy()
         for idx, value in np.ndenumerate(bewertungsuebersichtArray):
             item = QtWidgets.QTableWidgetItem(str(value))
-            self.BewertungsUebersicht_table.setItem(idx[0],idx[1],item)
+            if idx[1]<5:
+                self.BewertungsUebersicht_table.setItem(idx[0],idx[1],item)
 
     def falscheListeFenster(self, listtyp):
         box = QtWidgets.QMessageBox(self)

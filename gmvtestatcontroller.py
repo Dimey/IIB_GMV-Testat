@@ -13,6 +13,7 @@ class TestatController():
         self.connectSignals()
         
     def initializeModel(self):  
+        #self.model.checkAndLoadSave
         pass
         
     def initializeUI(self):
@@ -22,6 +23,8 @@ class TestatController():
         self.view.TucanListeLaden_btn.clicked.connect(self.oeffneTucanListe)
         self.view.MoodleListeLaden_btn.clicked.connect(self.oeffneMoodleListe)
         self.view.BatchImportKpLaden_btn.clicked.connect(self.oeffneKPOrdner)
+        self.view.AenderungenSpeichern_btn.clicked.connect(self.speichereAenderungen)
+        self.view.LadeSicherungsDatei_btn.clicked.connect(self.ladeSicherungsDatei)
 
     # TODO: Parametrisieren
     def oeffneTucanListe(self):
@@ -59,3 +62,9 @@ class TestatController():
         if path:
             self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
             self.model.ladeBatch(path)
+
+    def speichereAenderungen(self):
+        self.model.speichereBewertungsuebersichtAlsJSON()
+
+    def ladeSicherungsDatei(self):
+        pass

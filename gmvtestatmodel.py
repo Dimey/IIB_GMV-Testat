@@ -21,8 +21,11 @@ class TestatData():
         teilnehmerliste = pd.merge(self.moodleliste,self.tucanliste,on=['Nachname', 'Vorname'])
         columns_titles = ['Matrikelnummer','Nachname','Vorname']
         teilnehmerliste = teilnehmerliste.reindex(columns = columns_titles)
-        teilnehmerliste[['Punkte','Bestanden']] = ''
+        teilnehmerliste[['Punkte', 'Bestanden', 'Kriterium 1', 'Kriterium 2', 'Kriterium 3', 'Bemerkungen']] = ''
         self.bewertungsuebersicht = teilnehmerliste
+
+    def speichereBewertungsuebersichtAlsJSON(self):
+        self.bewertungsuebersicht.to_json('Ressources/Testat1_Sicherungsdatei_SensibleDaten.json',index=False,orient="table")
 
     def ladeBatch(self, path):
         konstruktionsprotokolleListe = []

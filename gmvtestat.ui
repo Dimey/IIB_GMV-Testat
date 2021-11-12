@@ -167,7 +167,7 @@
    <widget class="QPushButton" name="pushButton_8">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>30</x>
       <y>550</y>
       <width>161</width>
       <height>31</height>
@@ -247,7 +247,7 @@
      <rect>
       <x>31</x>
       <y>41</y>
-      <width>841</width>
+      <width>431</width>
       <height>151</height>
      </rect>
     </property>
@@ -387,19 +387,6 @@
        </item>
       </layout>
      </item>
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
     </layout>
    </widget>
    <widget class="QPushButton" name="pushButton">
@@ -415,7 +402,7 @@
      <string>Zum Konstruktionsprotokoll</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>790</x>
@@ -459,6 +446,70 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="AenderungenSpeichern_btn">
+    <property name="geometry">
+     <rect>
+      <x>402</x>
+      <y>550</y>
+      <width>191</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Änderungen speichern</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LadeSicherungsDatei_btn">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>190</y>
+      <width>181</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Lade Sicherungsdatei</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>30</y>
+      <width>241</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <row>
+     <property name="text">
+      <string>Checks erforderlich</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Bewertete Abgaben</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Bestandene Abgaben</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Punktedurchschnitt</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>Letzte Bearbeitung</string>
+     </property>
+    </row>
    </widget>
   </widget>
   <action name="actionHallo">
