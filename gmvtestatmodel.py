@@ -24,12 +24,11 @@ class TestatData():
         teilnehmerliste[['Punkte', 'Bestanden', 'Kriterium 1', 'Kriterium 2', 'Kriterium 3', 'Bemerkungen']] = ''
         self.bewertungsuebersicht = teilnehmerliste
 
-    def erstelleBewertungsUebersichtAusJSON(self):
-        pass
+    def speichereBewertungsUebersichtAlsCSV(self):
+        self.bewertungsuebersicht.to_csv('Ressources/Testat1_Bewertungsuebersicht_SensibleDaten.csv',index=False)
 
-
-    def speichereBewertungsuebersichtAlsJSON(self):
-        self.bewertungsuebersicht.to_json('Ressources/Testat1_Sicherungsdatei_SensibleDaten.json', orient = "split")
+    def ladeBewertungsUebersichtAusCSV(self, pfad):
+        self.bewertungsuebersicht = pd.read_csv(pfad)
 
     def ladeBatch(self, path):
         konstruktionsprotokolleListe = []
@@ -52,7 +51,5 @@ class TestatData():
     def erstelleZusammenfassung(self):
         pass
 
-    def ladeSicherungsDateiJSON(self, pfad):
-        self.sicherungsdatei = pd.read_json(pfad)
 
 

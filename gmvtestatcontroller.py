@@ -25,6 +25,7 @@ class TestatController():
         self.view.BatchImportKpLaden_btn.clicked.connect(self.oeffneKPOrdner)
         self.view.AenderungenSpeichern_btn.clicked.connect(self.speichereAenderungen)
         self.view.LadeSicherungsDatei_btn.clicked.connect(self.ladeSicherungsDatei)
+        self.view.BewertungsUebersicht_table.cellClicked.connect(self.uebergebeBewertung)
 
     # TODO: Parametrisieren
     def oeffneTucanListe(self):
@@ -64,12 +65,19 @@ class TestatController():
             self.model.ladeBatch(path)
 
     def speichereAenderungen(self):
-        self.model.speichereBewertungsuebersichtAlsJSON()
+        self.model.speichereBewertungsUebersichtAlsCSV()
 
     def ladeSicherungsDatei(self):
-        pfad = self.view.fileDialog('json')
-        self.model.ladeSicherungsDateiJSON(pfad)
+        pfad = self.view.fileDialog('csv')[0]
+        self.model.ladeBewertungsUebersichtAusCSV(pfad)
+        self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
 
     def zeigeZusammenfassung(self):
         self.model.erstelleZusammenfassung()
         pass
+
+    def uebergebeBewertung(self, row, column):
+        matrikelnummer = self.view.BewertungsUebersicht_table.item(row, 0).text()
+        #print(self.model.bewertungsuebersicht.loc[[matrikelnummer]])
+        #print(self.model.bewertungsuebersicht.loc[["Matrikelnummer"]==matrikelnummer])
+        print(self.model.bewertungsuebersicht.loc[self.model.bewertungsuebersicht['Matrikelnummer'] == int(matrikelnummer)])
