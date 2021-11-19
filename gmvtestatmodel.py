@@ -22,13 +22,13 @@ class TestatData():
         columns_titles = ['Matrikelnummer','Nachname','Vorname']
         teilnehmerliste = teilnehmerliste.reindex(columns = columns_titles)
         teilnehmerliste[['Punkte', 'Bestanden', 'Kriterium 1', 'Kriterium 2', 'Kriterium 3', 'Bemerkungen']] = ''
-        self.bewertungsuebersicht = teilnehmerliste
+        self.bewertungsuebersicht = teilnehmerliste.set_index('Matrikelnummer',drop=False)
 
     def speichereBewertungsUebersichtAlsCSV(self):
         self.bewertungsuebersicht.to_csv('Ressources/Testat1_Bewertungsuebersicht_SensibleDaten.csv',index=False)
 
     def ladeBewertungsUebersichtAusCSV(self, pfad):
-        self.bewertungsuebersicht = pd.read_csv(pfad)
+        self.bewertungsuebersicht = pd.read_csv(pfad).set_index('Matrikelnummer',drop=False)
 
     def ladeBatch(self, path):
         konstruktionsprotokolleListe = []
@@ -50,6 +50,13 @@ class TestatData():
 
     def erstelleZusammenfassung(self):
         pass
-
+    
+    # TODO
+    def updateBewertungsuebersicht(self, geklickteMatrikelnummer, header, value):
+        # Hole Reihen-Index über geklickteMatrikelnummer
+        print(pd.Index.get_indexer_for(self.bewertungsuebersicht,geklickteMatrikelnummer))
+        # Über Spalte "<header>" die richtige Zelle finden
+        # Überschreibe gefundene Zelle
+        # geklickteZeile = self.bewertungsuebersicht.loc[self.bewertungsuebersicht['Matrikelnummer'] == int(geklickteMatrikelnummer)]
 
 

@@ -46,6 +46,14 @@ class GMVTestat(QtWidgets.QMainWindow):
     def zeigeAnzahl(self, label, anzahl):
         label.setText(f'{anzahl}')
 
+    def zeigeBewertungsDetails(self, geklickteZeile):
+        self.krit1_lineEdit.setText(str(geklickteZeile["Kriterium 1"]))
+        self.krit2_lineEdit.setText(str(geklickteZeile["Kriterium 2"]))
+        self.krit3_lineEdit.setText(str(geklickteZeile["Kriterium 3"]))
+        self.bemerkungen_textEdit.setPlainText(str(geklickteZeile["Bemerkungen"]))
+        self.gesamtpunktzahl_label.setText(f"Gesamtpunktzahl: {str(geklickteZeile['Punkte'])}/20")
+        
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('macintosh')

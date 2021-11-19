@@ -27,6 +27,9 @@
       <height>291</height>
      </rect>
     </property>
+    <property name="selectionBehavior">
+     <enum>QAbstractItemView::SelectRows</enum>
+    </property>
     <property name="columnCount">
      <number>5</number>
     </property>
@@ -151,7 +154,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit_5">
+   <widget class="QPlainTextEdit" name="bemerkungen_textEdit">
     <property name="geometry">
      <rect>
       <x>610</x>
@@ -177,7 +180,7 @@
      <string>XLSX-Export</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_21">
+   <widget class="QLabel" name="gesamtpunktzahl_label">
     <property name="geometry">
      <rect>
       <x>690</x>
@@ -402,51 +405,6 @@
      <string>Zum Konstruktionsprotokoll</string>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>300</y>
-      <width>31</width>
-      <height>71</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_6">
-     <property name="spacing">
-      <number>4</number>
-     </property>
-     <item>
-      <widget class="QPlainTextEdit" name="plainTextEdit_2">
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPlainTextEdit" name="plainTextEdit_3">
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPlainTextEdit" name="plainTextEdit_4">
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAlwaysOff</enum>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QPushButton" name="AenderungenSpeichern_btn">
     <property name="geometry">
      <rect>
@@ -510,6 +468,27 @@
       <string>Letzte Bearbeitung</string>
      </property>
     </row>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>790</x>
+      <y>300</y>
+      <width>31</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_6">
+     <item>
+      <widget class="QLineEdit" name="krit1_lineEdit"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="krit2_lineEdit"/>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="krit3_lineEdit"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <action name="actionHallo">

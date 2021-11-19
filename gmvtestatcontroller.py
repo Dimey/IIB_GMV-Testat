@@ -26,6 +26,9 @@ class TestatController():
         self.view.AenderungenSpeichern_btn.clicked.connect(self.speichereAenderungen)
         self.view.LadeSicherungsDatei_btn.clicked.connect(self.ladeSicherungsDatei)
         self.view.BewertungsUebersicht_table.cellClicked.connect(self.uebergebeBewertung)
+        self.view.krit1_lineEdit.editingFinished.connect(self.speichereKrit1)
+        self.view.krit2_lineEdit.editingFinished.connect(self.speichereKrit2)
+        self.view.krit3_lineEdit.editingFinished.connect(self.speichereKrit3)
 
     # TODO: Parametrisieren
     def oeffneTucanListe(self):
@@ -77,7 +80,16 @@ class TestatController():
         pass
 
     def uebergebeBewertung(self, row, column):
-        matrikelnummer = self.view.BewertungsUebersicht_table.item(row, 0).text()
-        #print(self.model.bewertungsuebersicht.loc[[matrikelnummer]])
-        #print(self.model.bewertungsuebersicht.loc[["Matrikelnummer"]==matrikelnummer])
-        print(self.model.bewertungsuebersicht.loc[self.model.bewertungsuebersicht['Matrikelnummer'] == int(matrikelnummer)])
+        self.geklickteMatrikelnummer = int(self.view.BewertungsUebersicht_table.item(row, 0).text())
+        print(self.model.bewertungsuebersicht)
+        geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
+        self.view.zeigeBewertungsDetails(geklickteZeile)
+
+    def speichereKrit1(self):
+        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,"Kriterium 1",self.view.krit1_lineEdit.text())
+
+    def speichereKrit2(self):
+        pass
+
+    def speichereKrit3(self):
+        pass
