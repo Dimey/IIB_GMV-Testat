@@ -53,10 +53,10 @@ class TestatData():
     
     # TODO
     def updateBewertungsuebersicht(self, geklickteMatrikelnummer, header, value):
-        # Hole Reihen-Index über geklickteMatrikelnummer
-        print(pd.Index.get_indexer_for(self.bewertungsuebersicht,geklickteMatrikelnummer))
-        # Über Spalte "<header>" die richtige Zelle finden
-        # Überschreibe gefundene Zelle
-        # geklickteZeile = self.bewertungsuebersicht.loc[self.bewertungsuebersicht['Matrikelnummer'] == int(geklickteMatrikelnummer)]
+        # Überschreibe den Zellenwert des zugehörigen Kriteriums
+        self.bewertungsuebersicht.at[geklickteMatrikelnummer,header] = np.NaN if value == '' else value       
+        # Update ebenfalls die Gesamtpunktzahl
+        self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Punkte'] = self.gesamtPunktzahl(geklickteMatrikelnummer)
 
-
+    def gesamtPunktzahl(self, matrikelnummer):
+        return self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Kriterium 3'].sum()

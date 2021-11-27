@@ -13,7 +13,6 @@ class TestatController():
         self.connectSignals()
         
     def initializeModel(self):  
-        #self.model.checkAndLoadSave
         pass
         
     def initializeUI(self):
@@ -81,15 +80,18 @@ class TestatController():
 
     def uebergebeBewertung(self, row, column):
         self.geklickteMatrikelnummer = int(self.view.BewertungsUebersicht_table.item(row, 0).text())
-        print(self.model.bewertungsuebersicht)
         geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
-        self.view.zeigeBewertungsDetails(geklickteZeile)
+        print(geklickteZeile)
+        self.view.zeigeBewertungsDetails(geklickteZeile.fillna(''))
 
     def speichereKrit1(self):
         self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,"Kriterium 1",self.view.krit1_lineEdit.text())
+        self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
 
     def speichereKrit2(self):
-        pass
+        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,"Kriterium 2",self.view.krit2_lineEdit.text())
+        self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
 
     def speichereKrit3(self):
-        pass
+        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,"Kriterium 3",self.view.krit3_lineEdit.text())
+        self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)

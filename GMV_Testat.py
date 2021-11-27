@@ -1,4 +1,4 @@
-from PyQt5 import QtWidgets, uic
+from PyQt5 import QtGui, QtWidgets, uic
 import sys       
 from gmvtestatcontroller import TestatController
 from gmvtestatmodel import TestatData
@@ -14,6 +14,10 @@ class GMVTestat(QtWidgets.QMainWindow):
         
     def konfigUI(self):
         #TODO: 'Verschönern' durch setsectionresizemode
+        # Verhindere nicht-numerische Eingaben
+        self.krit1_lineEdit.setValidator(QtGui.QIntValidator())
+        self.krit2_lineEdit.setValidator(QtGui.QIntValidator())
+        self.krit3_lineEdit.setValidator(QtGui.QIntValidator())
         pass
 
     def fileDialog(self, ext):
@@ -52,7 +56,6 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.krit3_lineEdit.setText(str(geklickteZeile["Kriterium 3"]))
         self.bemerkungen_textEdit.setPlainText(str(geklickteZeile["Bemerkungen"]))
         self.gesamtpunktzahl_label.setText(f"Gesamtpunktzahl: {str(geklickteZeile['Punkte'])}/20")
-        
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
