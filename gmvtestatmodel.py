@@ -28,21 +28,23 @@ class TestatData():
         self.bewertungsuebersicht.to_csv('Ressources/Testat1_Bewertungsuebersicht_SensibleDaten.csv',index=False)
 
     def ladeBewertungsUebersichtAusCSV(self, pfad):
-        self.bewertungsuebersicht = pd.read_csv(pfad).set_index('Matrikelnummer',drop=False)
+        self.bewertungsuebersicht = pd.read_csv(pfad).set_index('Matrikelnummer',drop=False).fillna('')
 
     def ladeBatch(self, path):
         konstruktionsprotokolleListe = []
+        abgabenZaehler = 0
         for foldername in os.listdir(path): # Iteriere über alle Studenten-Ordner
             if not foldername.startswith('.'): # Ignoriere versteckte Dateien
                 for filename in os.listdir(f"{path}/{foldername}"):
                     if filename.endswith('html'):
                         kp = pd.read_html(f"{path}/{foldername}/{filename}")[0]
+                        abgabenZaehler += 1
+                        print(f"Konstruktionsprotokoll von {foldername.split('_')[0]} geladen.")
                         # Verkettete xml erstellen
                         # kp.to_xml(f"konstruktionsprotokolle.xml",index=False,root_name=f"id{filename[0:-5]}")
                         # Werte KP aus
                         # self.bepunkteKP(kp)
-                    else:
-                        print('Nicht passend.')
+        return abgabenZaehler
 
     def bepunkteKP(self, kp):
         # return: punkte
@@ -51,7 +53,6 @@ class TestatData():
     def erstelleZusammenfassung(self):
         pass
     
-    # TODO
     def updateBewertungsuebersicht(self, geklickteMatrikelnummer, header, value):
         # Überschreibe den Zellenwert des zugehörigen Kriteriums
         self.bewertungsuebersicht.at[geklickteMatrikelnummer,header] = np.NaN if value == '' else value       
@@ -59,4 +60,4 @@ class TestatData():
         self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Punkte'] = self.gesamtPunktzahl(geklickteMatrikelnummer)
 
     def gesamtPunktzahl(self, matrikelnummer):
-        return self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Kriterium 3'].sum()
+        return pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Kriterium 3']).sum()

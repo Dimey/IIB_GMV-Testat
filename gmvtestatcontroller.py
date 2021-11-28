@@ -13,7 +13,8 @@ class TestatController():
         self.connectSignals()
         
     def initializeModel(self):  
-        pass
+        # Setze Focus auf den Laden Button
+        self.view.TucanListeLaden_btn.setFocus();
         
     def initializeUI(self):
         pass
@@ -25,11 +26,10 @@ class TestatController():
         self.view.AenderungenSpeichern_btn.clicked.connect(self.speichereAenderungen)
         self.view.LadeSicherungsDatei_btn.clicked.connect(self.ladeSicherungsDatei)
         self.view.BewertungsUebersicht_table.cellClicked.connect(self.uebergebeBewertung)
-        self.view.krit1_lineEdit.editingFinished.connect(self.speichereKrit1)
-        self.view.krit2_lineEdit.editingFinished.connect(self.speichereKrit2)
-        self.view.krit3_lineEdit.editingFinished.connect(self.speichereKrit3)
+        self.view.krit1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit1_lineEdit,1))
+        self.view.krit2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit2_lineEdit,2))
+        self.view.krit3_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit3_lineEdit,3))
 
-    # TODO: Parametrisieren
     def oeffneTucanListe(self):
         try:
             filename = self.view.fileDialog('xlsx')
@@ -64,7 +64,8 @@ class TestatController():
         path = self.view.folderDialog()
         if path:
             self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
-            self.model.ladeBatch(path)
+            anzahlAbgaben = self.model.ladeBatch(path)
+            self.view.zeigeAnzahl(self.view.AnzahlAbgaben_label, anzahlAbgaben)
 
     def speichereAenderungen(self):
         self.model.speichereBewertungsUebersichtAlsCSV()
@@ -76,22 +77,14 @@ class TestatController():
 
     def zeigeZusammenfassung(self):
         self.model.erstelleZusammenfassung()
-        pass
 
     def uebergebeBewertung(self, row, column):
+        self.view.aktiviereBewertungsdetails(True)
         self.geklickteMatrikelnummer = int(self.view.BewertungsUebersicht_table.item(row, 0).text())
         geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
-        print(geklickteZeile)
-        self.view.zeigeBewertungsDetails(geklickteZeile.fillna(''))
+        self.view.fuelleBewertungsDetails(geklickteZeile.fillna(''))
 
-    def speichereKrit1(self):
-        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,"Kriterium 1",self.view.krit1_lineEdit.text())
+    def speichereKrit(self, lineEditObj, kritNr):
+        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,f"Kriterium {kritNr}",lineEditObj.text())
         self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
-
-    def speichereKrit2(self):
-        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,"Kriterium 2",self.view.krit2_lineEdit.text())
-        self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
-
-    def speichereKrit3(self):
-        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,"Kriterium 3",self.view.krit3_lineEdit.text())
-        self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
+        self.view.setzePunktestandLabel(self.model.gesamtPunktzahl(self.geklickteMatrikelnummer))

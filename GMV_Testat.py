@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, QtWidgets, uic
+from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import sys       
 from gmvtestatcontroller import TestatController
 from gmvtestatmodel import TestatData
@@ -13,12 +13,12 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.show()
         
     def konfigUI(self):
-        #TODO: 'Verschönern' durch setsectionresizemode
         # Verhindere nicht-numerische Eingaben
-        self.krit1_lineEdit.setValidator(QtGui.QIntValidator())
-        self.krit2_lineEdit.setValidator(QtGui.QIntValidator())
-        self.krit3_lineEdit.setValidator(QtGui.QIntValidator())
-        pass
+        eingabeChecker = QtGui.QDoubleValidator()
+        eingabeChecker.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
+        self.krit1_lineEdit.setValidator(eingabeChecker)
+        self.krit2_lineEdit.setValidator(eingabeChecker)
+        self.krit3_lineEdit.setValidator(eingabeChecker)
 
     def fileDialog(self, ext):
         return QtWidgets.QFileDialog.getOpenFileName(self, 
@@ -50,12 +50,18 @@ class GMVTestat(QtWidgets.QMainWindow):
     def zeigeAnzahl(self, label, anzahl):
         label.setText(f'{anzahl}')
 
-    def zeigeBewertungsDetails(self, geklickteZeile):
+    def aktiviereBewertungsdetails(self, istAktiv):
+        self.bewertungsdetails_groupBox.setEnabled(istAktiv)
+
+    def fuelleBewertungsDetails(self, geklickteZeile):
         self.krit1_lineEdit.setText(str(geklickteZeile["Kriterium 1"]))
         self.krit2_lineEdit.setText(str(geklickteZeile["Kriterium 2"]))
         self.krit3_lineEdit.setText(str(geklickteZeile["Kriterium 3"]))
         self.bemerkungen_textEdit.setPlainText(str(geklickteZeile["Bemerkungen"]))
-        self.gesamtpunktzahl_label.setText(f"Gesamtpunktzahl: {str(geklickteZeile['Punkte'])}/20")
+        self.setzePunktestandLabel(str(geklickteZeile['Punkte']))
+
+    def setzePunktestandLabel(self, punkte):
+        self.gesamtpunktzahl_label.setText(f"Gesamtpunktzahl: {punkte} / 20.0")
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
