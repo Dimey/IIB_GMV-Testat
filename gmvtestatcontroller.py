@@ -13,11 +13,11 @@ class TestatController():
         self.connectSignals()
         
     def initializeModel(self):  
-        # Setze Focus auf den Laden Button
-        self.view.TucanListeLaden_btn.setFocus();
+        pass
         
     def initializeUI(self):
-        pass
+        # Setze Focus auf den Laden Button
+        self.view.TucanListeLaden_btn.setFocus();
         
     def connectSignals(self):
         self.view.TucanListeLaden_btn.clicked.connect(self.oeffneTucanListe)
@@ -25,6 +25,7 @@ class TestatController():
         self.view.BatchImportKpLaden_btn.clicked.connect(self.oeffneKPOrdner)
         self.view.AenderungenSpeichern_btn.clicked.connect(self.speichereAenderungen)
         self.view.LadeSicherungsDatei_btn.clicked.connect(self.ladeSicherungsDatei)
+        self.view.zurAbgabe_btn.clicked.connect(self.rufeOrdnerImFileExplorer)
         self.view.BewertungsUebersicht_table.cellClicked.connect(self.uebergebeBewertung)
         self.view.krit1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit1_lineEdit,1))
         self.view.krit2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit2_lineEdit,2))
@@ -66,6 +67,7 @@ class TestatController():
             self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
             anzahlAbgaben = self.model.ladeBatch(path)
             self.view.zeigeAnzahl(self.view.AnzahlAbgaben_label, anzahlAbgaben)
+            self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
 
     def speichereAenderungen(self):
         self.model.speichereBewertungsUebersichtAlsCSV()
@@ -81,10 +83,21 @@ class TestatController():
     def uebergebeBewertung(self, row, column):
         self.view.aktiviereBewertungsdetails(True)
         self.geklickteMatrikelnummer = int(self.view.BewertungsUebersicht_table.item(row, 0).text())
-        geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
-        self.view.fuelleBewertungsDetails(geklickteZeile.fillna(''))
+        self.geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
+
+        # Logik zum Aktivieren/Deaktivieren des Zur-Abgabe-Buttons
+        if self.geklickteZeile['Pfad'] == '':
+            self.view.zurAbgabe_btn.setEnabled(False)
+        else:
+            self.view.zurAbgabe_btn.setEnabled(True)
+
+        # Fülle alle Bewertungsdetails des ausgewählten Studenten
+        self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
 
     def speichereKrit(self, lineEditObj, kritNr):
         self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,f"Kriterium {kritNr}",lineEditObj.text())
         self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
         self.view.setzePunktestandLabel(self.model.gesamtPunktzahl(self.geklickteMatrikelnummer))
+
+    def rufeOrdnerImFileExplorer(self):
+        self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])

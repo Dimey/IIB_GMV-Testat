@@ -1,5 +1,6 @@
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
-import sys       
+import sys
+import subprocess       
 from gmvtestatcontroller import TestatController
 from gmvtestatmodel import TestatData
 import numpy as np
@@ -13,12 +14,23 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.show()
         
     def konfigUI(self):
+        # Setze feste Fenstergröße
+        self.setFixedSize(800,600);
         # Verhindere nicht-numerische Eingaben
         eingabeChecker = QtGui.QDoubleValidator()
         eingabeChecker.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.krit1_lineEdit.setValidator(eingabeChecker)
         self.krit2_lineEdit.setValidator(eingabeChecker)
         self.krit3_lineEdit.setValidator(eingabeChecker)
+        
+        # Setze die Einstellungen für Spaltbreiten der Bewertungsübersicht
+        header = self.BewertungsUebersicht_table.horizontalHeader()       
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
 
     def fileDialog(self, ext):
         return QtWidgets.QFileDialog.getOpenFileName(self, 
@@ -33,7 +45,7 @@ class GMVTestat(QtWidgets.QMainWindow):
         bewertungsuebersichtArray = bewertungsuebersicht.to_numpy()
         for idx, value in np.ndenumerate(bewertungsuebersichtArray):
             item = QtWidgets.QTableWidgetItem(str(value))
-            if idx[1]<5:
+            if idx[1]<6:
                 self.BewertungsUebersicht_table.setItem(idx[0],idx[1],item)
 
     def falscheListeFenster(self, listtyp):
@@ -61,11 +73,15 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.setzePunktestandLabel(str(geklickteZeile['Punkte']))
 
     def setzePunktestandLabel(self, punkte):
-        self.gesamtpunktzahl_label.setText(f"Gesamtpunktzahl: {punkte} / 20.0")
+        self.gesamtpunktzahl_label.setText(f"Gesamtpunktzahl: {punkte} / 30.0")
+
+    def zeigeOrdnerImFinder(self, pfad):
+        subprocess.call(["open", "-R", pfad+'/'])
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('macintosh')
+    
     view = GMVTestat()
     model = TestatData()
     controller = TestatController(model, view)

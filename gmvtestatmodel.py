@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+from shutil import copytree
+import datetime
 import os
 
 class TestatData():
@@ -21,7 +23,8 @@ class TestatData():
         teilnehmerliste = pd.merge(self.moodleliste,self.tucanliste,on=['Nachname', 'Vorname'])
         columns_titles = ['Matrikelnummer','Nachname','Vorname']
         teilnehmerliste = teilnehmerliste.reindex(columns = columns_titles)
-        teilnehmerliste[['Punkte', 'Bestanden', 'Kriterium 1', 'Kriterium 2', 'Kriterium 3', 'Bemerkungen']] = ''
+        teilnehmerliste[['Abgabe', 'Punkte', 'Bestanden', 'Kriterium 1', 'Kriterium 2', 'Kriterium 3', 'Bemerkungen', 'Pfad']] = ''
+        teilnehmerliste['Abgabe'] = 'Nein'
         self.bewertungsuebersicht = teilnehmerliste.set_index('Matrikelnummer',drop=False)
 
     def speichereBewertungsUebersichtAlsCSV(self):
@@ -33,10 +36,26 @@ class TestatData():
     def ladeBatch(self, path):
         konstruktionsprotokolleListe = []
         abgabenZaehler = 0
+        datum = datetime.datetime.now()
+        # Ordnername für die Kopie aller Abgaben
+        folderNameCopy = f"Testatabgaben_{datum.day}{datum.month}{datum.year}"
+        if not os.path.isdir(folderNameCopy): # Wenn noch keine Abgaben-Kopie vorhanden
+            print("Kopie wurde angelegt.")
+            copytree(f"{path}", folderNameCopy)
+        else:
+            print("Es besteht bereits eine Abgaben-Kopie.")
         for foldername in os.listdir(path): # Iteriere über alle Studenten-Ordner
             if not foldername.startswith('.'): # Ignoriere versteckte Dateien
+                # Extrahiere Studenten-Namen aus Ordnernamen
+                studentFullname = foldername.split('_')[0].split(' ')
+                studentFirstname = studentFullname[0]
+                studentLastname = studentFullname[1]
+                # Weise Abgabenstatus zu
+                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Nachname == studentLastname)&(self.bewertungsuebersicht.Vorname == studentFirstname), ['Abgabe','Pfad']] = ['Ja',f'{folderNameCopy}/{foldername}']
+                
                 for filename in os.listdir(f"{path}/{foldername}"):
                     if filename.endswith('html'):
+                        print(filename)
                         kp = pd.read_html(f"{path}/{foldername}/{filename}")[0]
                         abgabenZaehler += 1
                         print(f"Konstruktionsprotokoll von {foldername.split('_')[0]} geladen.")
