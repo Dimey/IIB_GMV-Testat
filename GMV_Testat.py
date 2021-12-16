@@ -64,6 +64,7 @@ class GMVTestat(QtWidgets.QMainWindow):
 
     def aktiviereBewertungsdetails(self, istAktiv):
         self.bewertungsdetails_groupBox.setEnabled(istAktiv)
+        self.diffTool_btn.setEnabled(False)
 
     def fuelleBewertungsDetails(self, geklickteZeile):
         self.krit1_lineEdit.setText(str(geklickteZeile["Kriterium 1"]))
@@ -76,7 +77,10 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.gesamtpunktzahl_label.setText(f"Gesamtpunktzahl: {punkte} / 30.0")
 
     def zeigeOrdnerImFinder(self, pfad):
-        subprocess.call(["open", "-R", pfad+'/'])
+        subprocess.call(["open", "-R", pfad])
+
+    def pdfStatusFenster(self, pdfStatus):
+        pass
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

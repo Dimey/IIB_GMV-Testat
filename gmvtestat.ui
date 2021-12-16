@@ -277,7 +277,7 @@
       <string>PDF-Export</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_5">
+    <widget class="QPushButton" name="diffTool_btn">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -328,13 +328,25 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QLineEdit" name="krit1_lineEdit"/>
+         <widget class="QLineEdit" name="krit1_lineEdit">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="krit2_lineEdit"/>
+         <widget class="QLineEdit" name="krit2_lineEdit">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="QLineEdit" name="krit3_lineEdit"/>
+         <widget class="QLineEdit" name="krit3_lineEdit">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>

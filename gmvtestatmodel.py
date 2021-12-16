@@ -3,6 +3,7 @@ import numpy as np
 from shutil import copytree
 import datetime
 import os
+from fpdf import FPDF
 
 class TestatData():
     def __init__(self):
@@ -55,10 +56,9 @@ class TestatData():
                 
                 for filename in os.listdir(f"{path}/{foldername}"):
                     if filename.endswith('html'):
-                        print(filename)
-                        kp = pd.read_html(f"{path}/{foldername}/{filename}")[0]
                         abgabenZaehler += 1
-                        print(f"Konstruktionsprotokoll von {foldername.split('_')[0]} geladen.")
+                        # kp = pd.read_html(f"{path}/{foldername}/{filename}")[0]
+                        # print(f"Konstruktionsprotokoll von {foldername.split('_')[0]} geladen.")
                         # Verkettete xml erstellen
                         # kp.to_xml(f"konstruktionsprotokolle.xml",index=False,root_name=f"id{filename[0:-5]}")
                         # Werte KP aus
@@ -80,3 +80,6 @@ class TestatData():
 
     def gesamtPunktzahl(self, matrikelnummer):
         return pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Kriterium 3']).sum()
+
+    def exportPDF(self, matrikelNummer):
+        pdf = FPDF()

@@ -30,6 +30,7 @@ class TestatController():
         self.view.krit1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit1_lineEdit,1))
         self.view.krit2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit2_lineEdit,2))
         self.view.krit3_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit3_lineEdit,3))
+        self.view.pdfExport_btn.clicked.connect(self.erzeugePDF)
 
     def oeffneTucanListe(self):
         try:
@@ -101,3 +102,7 @@ class TestatController():
 
     def rufeOrdnerImFileExplorer(self):
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])
+
+    def erzeugePDF(self):
+        pdfStatus = self.model.exportPDF(self.geklickteMatrikelnummer)
+        self.view.pdfStatusFenster(pdfStatus)
