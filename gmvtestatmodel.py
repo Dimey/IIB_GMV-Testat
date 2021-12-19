@@ -4,6 +4,7 @@ from shutil import copytree
 import datetime
 import os
 from fpdf import FPDF
+from testatpdf import TestatPDF
 
 class TestatData():
     def __init__(self):
@@ -82,4 +83,7 @@ class TestatData():
         return pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Kriterium 3']).sum()
 
     def exportPDF(self, matrikelNummer):
-        pdf = FPDF()
+        df = self.bewertungsuebersicht.loc[matrikelNummer]
+        pdf = TestatPDF(df)
+        pdf.output(f"{df['Pfad']}/{matrikelNummer}.pdf")
+        return 0
