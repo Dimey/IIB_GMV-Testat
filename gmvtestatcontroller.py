@@ -30,6 +30,13 @@ class TestatController():
         self.view.krit1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit1_lineEdit,1))
         self.view.krit2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit2_lineEdit,2))
         self.view.krit3_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit3_lineEdit,3))
+        self.view.krit4_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit4_lineEdit,4))
+        self.view.krit5_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit5_lineEdit,5))
+        self.view.krit6_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit6_lineEdit,6))
+        self.view.krit7_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit7_lineEdit,7))
+        self.view.krit8_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit8_lineEdit,8))
+        self.view.krit9_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit9_lineEdit,9))
+        self.view.bemerkung_lineEdit.editingFinished.connect(partial(self.speichereBemerkung,self.view.bemerkung_lineEdit))
         self.view.pdfExport_btn.clicked.connect(self.erzeugePDF)
 
     def oeffneTucanListe(self):
@@ -99,6 +106,10 @@ class TestatController():
         self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,f"Kriterium {kritNr}",lineEditObj.text())
         self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
         self.view.setzePunktestandLabel(self.model.gesamtPunktzahl(self.geklickteMatrikelnummer))
+
+    def speichereBemerkung(self, lineEditObj):
+        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,f"Bemerkungen",lineEditObj.text())
+        # self.view.setzePunktestandLabel(self.model.gesamtPunktzahl(self.geklickteMatrikelnummer))
 
     def rufeOrdnerImFileExplorer(self):
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])

@@ -15,7 +15,7 @@ class GMVTestat(QtWidgets.QMainWindow):
         
     def konfigUI(self):
         # Setze feste Fenstergröße
-        self.setFixedSize(800,600);
+        self.setFixedSize(800,990);
         # Verhindere nicht-numerische Eingaben
         eingabeChecker = QtGui.QDoubleValidator()
         eingabeChecker.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
@@ -31,6 +31,10 @@ class GMVTestat(QtWidgets.QMainWindow):
         header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(4, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(5, QtWidgets.QHeaderView.ResizeToContents)
+
+        # Färbe Eingebefelder
+        self.abzug1_lineEdit.setStyleSheet("background-color: rgb(255, 126, 121);")
+        self.abzug2_lineEdit.setStyleSheet("background-color: rgb(255, 126, 121);")
 
     def fileDialog(self, ext):
         return QtWidgets.QFileDialog.getOpenFileName(self, 
@@ -70,7 +74,13 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.krit1_lineEdit.setText(str(geklickteZeile["Kriterium 1"]))
         self.krit2_lineEdit.setText(str(geklickteZeile["Kriterium 2"]))
         self.krit3_lineEdit.setText(str(geklickteZeile["Kriterium 3"]))
-        self.bemerkungen_textEdit.setPlainText(str(geklickteZeile["Bemerkungen"]))
+        self.krit4_lineEdit.setText(str(geklickteZeile["Kriterium 4"]))
+        self.krit5_lineEdit.setText(str(geklickteZeile["Kriterium 5"]))
+        self.krit6_lineEdit.setText(str(geklickteZeile["Kriterium 6"]))
+        self.krit7_lineEdit.setText(str(geklickteZeile["Kriterium 7"]))
+        self.krit8_lineEdit.setText(str(geklickteZeile["Kriterium 8"]))
+        self.krit9_lineEdit.setText(str(geklickteZeile["Kriterium 9"]))
+        self.bemerkung_lineEdit.setText(str(geklickteZeile["Bemerkungen"]))
         self.setzePunktestandLabel(str(geklickteZeile['Punkte']))
 
     def setzePunktestandLabel(self, punkte):

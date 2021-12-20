@@ -25,7 +25,22 @@ class TestatData():
         teilnehmerliste = pd.merge(self.moodleliste,self.tucanliste,on=['Nachname', 'Vorname'])
         columns_titles = ['Matrikelnummer','Nachname','Vorname']
         teilnehmerliste = teilnehmerliste.reindex(columns = columns_titles)
-        teilnehmerliste[['Abgabe', 'Punkte', 'Bestanden', 'Kriterium 1', 'Kriterium 2', 'Kriterium 3', 'Bemerkungen', 'Pfad']] = ''
+        teilnehmerliste[['Abgabe', 
+        'Punkte', 
+        'Bestanden', 
+        'Kriterium 1', 
+        'Kriterium 2', 
+        'Kriterium 3',
+        'Kriterium 4',
+        'Kriterium 5',
+        'Kriterium 6',
+        'Kriterium 7',
+        'Kriterium 8',
+        'Kriterium 9', 
+        'Abzug 1',
+        'Abzug 2',
+        'Bemerkungen', 
+        'Pfad']] = ''
         teilnehmerliste['Abgabe'] = 'Nein'
         self.bewertungsuebersicht = teilnehmerliste.set_index('Matrikelnummer',drop=False)
 
@@ -48,16 +63,11 @@ class TestatData():
             print("Es besteht bereits eine Abgaben-Kopie.")
         for foldername in os.listdir(path): # Iteriere über alle Studenten-Ordner
             if not foldername.startswith('.'): # Ignoriere versteckte Dateien
-                # Extrahiere Studenten-Namen aus Ordnernamen
-                studentFullname = foldername.split('_')[0].split(' ')
-                studentFirstname = studentFullname[0]
-                studentLastname = studentFullname[1]
-                # Weise Abgabenstatus zu
-                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Nachname == studentLastname)&(self.bewertungsuebersicht.Vorname == studentFirstname), ['Abgabe','Pfad']] = ['Ja',f'{folderNameCopy}/{foldername}']
-                
                 for filename in os.listdir(f"{path}/{foldername}"):
                     if filename.endswith('html'):
                         abgabenZaehler += 1
+                        # Weise Abgabenstatus zu
+                        self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(filename[0:-5])), ['Abgabe','Pfad']] = ['Ja',f'{folderNameCopy}/{foldername}']
                         # kp = pd.read_html(f"{path}/{foldername}/{filename}")[0]
                         # print(f"Konstruktionsprotokoll von {foldername.split('_')[0]} geladen.")
                         # Verkettete xml erstellen
@@ -80,7 +90,7 @@ class TestatData():
         self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Punkte'] = self.gesamtPunktzahl(geklickteMatrikelnummer)
 
     def gesamtPunktzahl(self, matrikelnummer):
-        return pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Kriterium 3']).sum()
+        return pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Kriterium 9']).sum()
 
     def exportPDF(self, matrikelNummer):
         df = self.bewertungsuebersicht.loc[matrikelNummer]

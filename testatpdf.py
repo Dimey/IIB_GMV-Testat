@@ -9,7 +9,7 @@ class TestatPDF(FPDF):
 
         # Meta data
         self.set_title(f"Testatbewertung für {df['Vorname']} {df['Nachname']}")
-        self.set_author(f'Dimitri Haas')
+        self.set_author(f'Pascal Moser')
 
     def header(self):
         # IIB Logo
@@ -30,7 +30,7 @@ class TestatPDF(FPDF):
         self.set_font(family='Arial', style='I', size=10)
         self.set_text_color(0,0,0)
         # Set text
-        self.cell(w=0, h=8, txt=f'PDF erzeugt am {str(datetime.datetime.now())[0:19]} von Dimitri Haas', align='C')
+        self.cell(w=0, h=8, txt=f'PDF erzeugt am {str(datetime.datetime.now())[0:19]} von Pascal Moser', align='C')
 
     def constructPDF(self, df):
         # Add a page
@@ -52,7 +52,30 @@ class TestatPDF(FPDF):
         # tasks and gradings
         # task 1
         self.set_font(family='Arial', style='b', size=12)
-        self.cell(w=0, h=8, txt=f"Aufgabe 1: Schattenwurf ({df['Kriterium 1']}/12 Punkte)", align='L')
+        self.cell(w=0, h=8, txt=f"Aufgabe 1: Schattenwurf", align='L')
+        self.set_font(family='Courier', style='b', size=12)
+        punkteAufg1 = float(df['Kriterium 1'])*1.5 + float(df['Kriterium 2']) + float(df['Kriterium 3']) + float(df['Kriterium 4'])
+        self.cell(w=0, h=8, txt=f"({punkteAufg1} / 12 Punkte)", align='R', ln=1)
+        # crit 1
+        self.set_font(family='Arial', style='', size=12)
+        self.cell(w=0, h=8, txt=f"Schatteneckpunkte", align='L')
+        self.set_font(family='Courier', style='', size=12)
+        self.cell(w=0, h=8, txt=f"({float(df['Kriterium 1'])*1.5} / 6 Punkte)", align='R', ln=1)
+        # crit 2
+        self.set_font(family='Arial', style='', size=12)
+        self.cell(w=0, h=8, txt=f"Stamm ausgespart", align='L')
+        self.set_font(family='Courier', style='', size=12)
+        self.cell(w=0, h=8, txt=f"({df['Kriterium 2']} / 1 Punkte)", align='R', ln=1)
+        # crit 3
+        self.set_font(family='Arial', style='', size=12)
+        self.cell(w=0, h=8, txt=f"Vielecke zwischen Schatteneckpunkten", align='L')
+        self.set_font(family='Courier', style='', size=12)
+        self.cell(w=0, h=8, txt=f"({df['Kriterium 3']} / 4 Punkte)", align='R', ln=1)
+        # crit 4
+        self.set_font(family='Arial', style='', size=12)
+        self.cell(w=0, h=8, txt=f"Vielecke verschneidungsfrei", align='L')
+        self.set_font(family='Courier', style='', size=12)
+        self.cell(w=0, h=8, txt=f"({df['Kriterium 4']} / 1 Punkte)", align='R', ln=1)
         self.ln(16)
 
         # task 2
@@ -69,7 +92,7 @@ class TestatPDF(FPDF):
         self.multi_cell(w=100, h=8, txt=f"{df['Bemerkungen']}", align='L')
 
         # final grade
-        punkteGesamt = int(df['Kriterium 1'])+int(df['Kriterium 2'])+int(df['Kriterium 3'])
+        punkteGesamt = punkteAufg1
         bestehensGrenze = 15
         self.set_y(-48)
         self.set_font(family='Arial', style='B', size=12)
