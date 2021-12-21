@@ -9,7 +9,7 @@ class TestatPDF(FPDF):
 
         # Meta data
         self.set_title(f"Testatbewertung für {df['Vorname']} {df['Nachname']}")
-        self.set_author(f'Pascal Moser')
+        self.set_author(f'Pascal Mosler')
 
     def header(self):
         # IIB Logo
@@ -30,7 +30,7 @@ class TestatPDF(FPDF):
         self.set_font(family='Arial', style='I', size=10)
         self.set_text_color(0,0,0)
         # Set text
-        self.cell(w=0, h=8, txt=f'PDF erzeugt am {str(datetime.datetime.now())[0:19]} von Pascal Moser', align='C')
+        self.cell(w=0, h=8, txt=f'PDF erzeugt am {str(datetime.datetime.now())[0:19]} von Pascal Mosler', align='C')
 
     def constructPDF(self, df):
         # Add a page

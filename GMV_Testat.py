@@ -44,7 +44,7 @@ class GMVTestat(QtWidgets.QMainWindow):
     def folderDialog(self):
         return QtWidgets.QFileDialog.getExistingDirectory(self, caption='Öffne den Ordner mit den Moodle-Abgaben')
 
-    def zeigeBewertungsUebersicht(self, bewertungsuebersicht):
+    def fuelleBewertungsUebersicht(self, bewertungsuebersicht):
         self.BewertungsUebersicht_table.setRowCount(bewertungsuebersicht.shape[0])
         bewertungsuebersichtArray = bewertungsuebersicht.to_numpy()
         for idx, value in np.ndenumerate(bewertungsuebersichtArray):
@@ -52,9 +52,9 @@ class GMVTestat(QtWidgets.QMainWindow):
             if idx[1]<6:
                 self.BewertungsUebersicht_table.setItem(idx[0],idx[1],item)
 
-    def setzeBewertungsUebersichtZelle(self, row, newValue):
+    def setzeBewertungsUebersichtZelle(self, row, column, newValue):
         item = QtWidgets.QTableWidgetItem(str(newValue))
-        self.BewertungsUebersicht_table.setItem(row,4,item)
+        self.BewertungsUebersicht_table.setItem(row, column, item)
 
     def falscheListeFenster(self, listtyp):
         box = QtWidgets.QMessageBox(self)

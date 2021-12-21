@@ -90,8 +90,8 @@ class TestatData():
         self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Punkte'] = self.gesamtPunktzahl(geklickteMatrikelnummer)
 
     def gesamtPunktzahl(self, matrikelnummer):
-        wertungsSchluessel = [1.5, 1, 1, 1, 0.5, 0.25, 0.875, 1, 0.375]
-        return (pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Kriterium 9'])*wertungsSchluessel).sum()
+        wertungsSchluessel = [1.5, 1, 1, 1, 0.5, 0.25, 0.625, 1, 0.375, 1, 1]
+        return (pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Abzug 2'])*wertungsSchluessel).sum()
 
     def exportPDF(self, matrikelNummer):
         df = self.bewertungsuebersicht.loc[matrikelNummer]
