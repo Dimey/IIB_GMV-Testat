@@ -1,5 +1,6 @@
-__pycache__
 __pycache__/
 .DS_Store
 Ressources/.DS_Store
-__pycache__/gmvtestatcontroller.cpython-38.pyc
+*.py[cod]
+*.pyc
+*.pyo

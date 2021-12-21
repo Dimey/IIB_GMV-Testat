@@ -104,12 +104,15 @@ class TestatController():
 
     def speichereKrit(self, lineEditObj, kritNr):
         self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,f"Kriterium {kritNr}",lineEditObj.text())
-        self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
+        # self.view.zeigeBewertungsUebersicht(self.model.bewertungsuebersicht)
+        df = self.model.bewertungsuebersicht.reset_index(drop=True)
+        row = df[df['Matrikelnummer'] == self.geklickteMatrikelnummer].index[0] 
+        neueGesamtPunkte = self.model.bewertungsuebersicht.at[self.geklickteMatrikelnummer,'Punkte']
+        self.view.setzeBewertungsUebersichtZelle(row, neueGesamtPunkte)
         self.view.setzePunktestandLabel(self.model.gesamtPunktzahl(self.geklickteMatrikelnummer))
 
     def speichereBemerkung(self, lineEditObj):
         self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,f"Bemerkungen",lineEditObj.text())
-        # self.view.setzePunktestandLabel(self.model.gesamtPunktzahl(self.geklickteMatrikelnummer))
 
     def rufeOrdnerImFileExplorer(self):
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])

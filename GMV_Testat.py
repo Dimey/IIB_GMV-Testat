@@ -52,6 +52,10 @@ class GMVTestat(QtWidgets.QMainWindow):
             if idx[1]<6:
                 self.BewertungsUebersicht_table.setItem(idx[0],idx[1],item)
 
+    def setzeBewertungsUebersichtZelle(self, row, newValue):
+        item = QtWidgets.QTableWidgetItem(str(newValue))
+        self.BewertungsUebersicht_table.setItem(row,4,item)
+
     def falscheListeFenster(self, listtyp):
         box = QtWidgets.QMessageBox(self)
         box.setWindowTitle('Fehler: Falscher Dateiname.')
@@ -84,7 +88,8 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.setzePunktestandLabel(str(geklickteZeile['Punkte']))
 
     def setzePunktestandLabel(self, punkte):
-        self.gesamtpunktzahl_label.setText(f"Gesamtpunktzahl: {punkte} / 30.0")
+        text = f'<html><head/><body><p><span style=" font-size:14pt; font-weight:600;">Gesamtpunktzahl: {punkte} / 30.0 P</span></p></body></html>'
+        self.gesamtpunktzahl_label.setText(text)
 
     def zeigeOrdnerImFinder(self, pfad):
         subprocess.call(["open", "-R", pfad])
