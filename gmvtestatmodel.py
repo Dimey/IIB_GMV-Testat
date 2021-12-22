@@ -9,6 +9,7 @@ from testatpdf import TestatPDF
 class TestatData():
     def __init__(self):
         super(TestatData, self).__init__() 
+        self.bestehensGrenze = 15
 
     def ladeTucanListe(self, pfad):
         tucanliste = pd.read_excel(pfad, header = None)
@@ -41,7 +42,7 @@ class TestatData():
         'Abzug 2',
         'Bemerkungen', 
         'Pfad']] = ''
-        teilnehmerliste['Abgabe'] = 'Nein'
+        teilnehmerliste[['Abgabe', 'Bestanden']] = 'Nein'
         self.bewertungsuebersicht = teilnehmerliste.set_index('Matrikelnummer',drop=False)
 
     def speichereBewertungsUebersichtAlsCSV(self):
@@ -83,11 +84,22 @@ class TestatData():
     def erstelleZusammenfassung(self):
         pass
     
-    def updateBewertungsuebersicht(self, geklickteMatrikelnummer, header, value):
+    def updateBewertungsUebersichtZelle(self, geklickteMatrikelnummer, header, value):
         # Überschreibe den Zellenwert des zugehörigen Kriteriums
         self.bewertungsuebersicht.at[geklickteMatrikelnummer,header] = np.NaN if value == '' else value       
         # Update ebenfalls die Gesamtpunktzahl
-        self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Punkte'] = self.gesamtPunktzahl(geklickteMatrikelnummer)
+        gesamtPunktzahl = self.gesamtPunktzahl(geklickteMatrikelnummer)
+        self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Punkte'] = gesamtPunktzahl
+        self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Bestanden'] = 'Ja' if gesamtPunktzahl >= self.bestehensGrenze else 'Nein'
+
+    def updateBestandenStatusAllerStudenten(self):
+        df = self.bewertungsuebersicht
+        for index_i in df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index:
+            bestandenStatus = 'Ja' if df.loc[index_i,'Punkte'] >= self.bestehensGrenze else 'Nein'
+            self.bewertungsuebersicht.at[index_i,'Bestanden'] = bestandenStatus
+        df = df.reset_index(drop=True)
+        # rows aller fraglichen Studenten
+        return df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index 
 
     def gesamtPunktzahl(self, matrikelnummer):
         wertungsSchluessel = [1.5, 1, 1, 1, 0.5, 0.25, 0.625, 1, 0.375, 1, 1]

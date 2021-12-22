@@ -38,6 +38,7 @@ class TestatController():
         self.view.krit9_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit9_lineEdit,"Kriterium 9"))
         self.view.abzug1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug1_lineEdit,"Abzug 1"))
         self.view.abzug2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug2_lineEdit,"Abzug 2"))
+        self.view.grenze_spinBox.valueChanged.connect(self.neueGrenzeErhalten)
         self.view.bemerkung_lineEdit.editingFinished.connect(partial(self.speichereBemerkung,self.view.bemerkung_lineEdit))
         self.view.pdfExport_btn.clicked.connect(self.erzeugePDF)
 
@@ -105,16 +106,28 @@ class TestatController():
         self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
 
     def speichereKrit(self, lineEditObj, header):
-        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,header,lineEditObj.text())
+        self.model.updateBewertungsUebersichtZelle(self.geklickteMatrikelnummer,header,lineEditObj.text())
         df = self.model.bewertungsuebersicht.reset_index(drop=True)
         row = df[df['Matrikelnummer'] == self.geklickteMatrikelnummer].index[0] 
-        column = df.columns.get_loc("Punkte")
+        columnPunkte = df.columns.get_loc("Punkte")
         neueGesamtPunkte = self.model.bewertungsuebersicht.at[self.geklickteMatrikelnummer,'Punkte']
-        self.view.setzeBewertungsUebersichtZelle(row, column, neueGesamtPunkte)
+        self.view.setzeBewertungsUebersichtZelle(row, columnPunkte, neueGesamtPunkte)
+        columnBestanden = df.columns.get_loc("Bestanden")
+        neuerBestandenStatus = self.model.bewertungsuebersicht.at[self.geklickteMatrikelnummer,'Bestanden']
+        self.view.setzeBewertungsUebersichtZelle(row, columnBestanden, neuerBestandenStatus)
         self.view.setzePunktestandLabel(self.model.gesamtPunktzahl(self.geklickteMatrikelnummer))
 
     def speichereBemerkung(self, lineEditObj):
-        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,f"Bemerkungen",lineEditObj.text())
+        self.model.updateBewertungsUebersichtZelle(self.geklickteMatrikelnummer,f"Bemerkungen",lineEditObj.text())
+
+    def neueGrenzeErhalten(self, newValue):
+        self.model.bestehensGrenze = newValue
+        rows = self.model.updateBestandenStatusAllerStudenten()
+        df = self.model.bewertungsuebersicht.reset_index(drop=True)
+        column = df.columns.get_loc("Bestanden")
+        for row in rows:
+            neuerBestandenStatus = df.at[row,'Bestanden']
+            self.view.setzeBewertungsUebersichtZelle(row, column, neuerBestandenStatus)
 
     def rufeOrdnerImFileExplorer(self):
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])

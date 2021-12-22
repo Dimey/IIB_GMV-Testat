@@ -84,6 +84,8 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.krit7_lineEdit.setText(str(geklickteZeile["Kriterium 7"]))
         self.krit8_lineEdit.setText(str(geklickteZeile["Kriterium 8"]))
         self.krit9_lineEdit.setText(str(geklickteZeile["Kriterium 9"]))
+        self.abzug1_lineEdit.setText(str(geklickteZeile["Abzug 1"]))
+        self.abzug2_lineEdit.setText(str(geklickteZeile["Abzug 2"]))
         self.bemerkung_lineEdit.setText(str(geklickteZeile["Bemerkungen"]))
         self.setzePunktestandLabel(str(geklickteZeile['Punkte']))
 

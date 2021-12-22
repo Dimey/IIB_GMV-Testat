@@ -89,6 +89,9 @@
     </column>
    </widget>
    <widget class="QPushButton" name="pushButton_8">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -124,7 +127,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Änderungen speichern</string>
+     <string>Speichern</string>
     </property>
    </widget>
    <widget class="QPushButton" name="LadeSicherungsDatei_btn">
@@ -137,10 +140,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>Lade Sicherungsdatei</string>
+     <string>Laden</string>
     </property>
    </widget>
    <widget class="QTableWidget" name="tableWidget">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>530</x>
@@ -268,7 +274,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
+       <y>70</y>
        <width>241</width>
        <height>161</height>
       </rect>
@@ -389,7 +395,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>230</y>
+       <y>240</y>
        <width>241</width>
        <height>131</height>
       </rect>
@@ -489,7 +495,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>370</y>
+       <y>380</y>
        <width>241</width>
        <height>91</height>
       </rect>
@@ -568,7 +574,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>470</y>
+       <y>480</y>
        <width>241</width>
        <height>91</height>
       </rect>
@@ -632,9 +638,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>580</y>
+       <y>590</y>
        <width>241</width>
-       <height>91</height>
+       <height>81</height>
       </rect>
      </property>
      <property name="alignment">
@@ -872,6 +878,9 @@
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>420</x>
