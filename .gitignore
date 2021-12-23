@@ -5,3 +5,5 @@ Ressources/.DS_Store
 *.pyc
 *.pyo
 Ressources/
+__pycache__
+Ressources
