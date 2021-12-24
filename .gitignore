@@ -4,6 +4,3 @@ Ressources/.DS_Store
 *.py[cod]
 *.pyc
 *.pyo
-Ressources/
-__pycache__
-Ressources

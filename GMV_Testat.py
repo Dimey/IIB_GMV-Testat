@@ -22,15 +22,7 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.krit1_lineEdit.setValidator(eingabeChecker)
         self.krit2_lineEdit.setValidator(eingabeChecker)
         self.krit3_lineEdit.setValidator(eingabeChecker)
-        self.krit4_lineEdit.setValidator(eingabeChecker)
-        self.krit5_lineEdit.setValidator(eingabeChecker)
-        self.krit6_lineEdit.setValidator(eingabeChecker)
-        self.krit7_lineEdit.setValidator(eingabeChecker)
-        self.krit8_lineEdit.setValidator(eingabeChecker)
-        self.krit9_lineEdit.setValidator(eingabeChecker)
-        self.abzug1_lineEdit.setValidator(eingabeChecker)
-        self.abzug2_lineEdit.setValidator(eingabeChecker)
-
+        
         # Setze die Einstellungen für Spaltbreiten der Bewertungsübersicht
         header = self.BewertungsUebersicht_table.horizontalHeader()       
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
@@ -47,7 +39,7 @@ class GMVTestat(QtWidgets.QMainWindow):
     def fileDialog(self, ext):
         return QtWidgets.QFileDialog.getOpenFileName(self, 
             f'Öffne die {ext}-Datei', 
-            filter = f'{ext}-Dateien k(*.{ext}) ;; Alle Dateien (*)')
+            filter = f'{ext}-Dateien (*.{ext}) ;; Alle Dateien (*)')
 
     def folderDialog(self):
         return QtWidgets.QFileDialog.getExistingDirectory(self, caption='Öffne den Ordner mit den Moodle-Abgaben')
@@ -75,12 +67,12 @@ class GMVTestat(QtWidgets.QMainWindow):
     def zeigeLadenHaken(self, button):
         button.setText(u'Laden \u2714')
 
-    def fuelleLabel(self, label, newValue):
-        label.setText(f'{newValue}')
+    def zeigeAnzahl(self, label, anzahl):
+        label.setText(f'{anzahl}')
 
     def aktiviereBewertungsdetails(self, istAktiv):
         self.bewertungsdetails_groupBox.setEnabled(istAktiv)
-        self.idCheck_btn.setEnabled(False)
+        self.diffTool_btn.setEnabled(False)
 
     def fuelleBewertungsDetails(self, geklickteZeile):
         self.krit1_lineEdit.setText(str(geklickteZeile["Kriterium 1"]))
@@ -92,8 +84,6 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.krit7_lineEdit.setText(str(geklickteZeile["Kriterium 7"]))
         self.krit8_lineEdit.setText(str(geklickteZeile["Kriterium 8"]))
         self.krit9_lineEdit.setText(str(geklickteZeile["Kriterium 9"]))
-        self.abzug1_lineEdit.setText(str(geklickteZeile["Abzug 1"]))
-        self.abzug2_lineEdit.setText(str(geklickteZeile["Abzug 2"]))
         self.bemerkung_lineEdit.setText(str(geklickteZeile["Bemerkungen"]))
         self.setzePunktestandLabel(str(geklickteZeile['Punkte']))
 
