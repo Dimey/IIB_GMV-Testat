@@ -23,8 +23,8 @@ class TestatController():
         self.view.TucanListeLaden_btn.clicked.connect(self.oeffneTucanListe)
         self.view.MoodleListeLaden_btn.clicked.connect(self.oeffneMoodleListe)
         self.view.BatchImportKpLaden_btn.clicked.connect(self.oeffneKPOrdner)
-        self.view.AenderungenSpeichern_btn.clicked.connect(self.speichereAenderungen)
-        self.view.LadeSicherungsDatei_btn.clicked.connect(self.ladeSicherungsDatei)
+        self.view.Speichern_btn.clicked.connect(self.speichereAenderungen)
+        self.view.Laden_btn.clicked.connect(self.ladeSicherungsDatei)
         self.view.zurAbgabe_btn.clicked.connect(self.rufeOrdnerImFileExplorer)
         self.view.BewertungsUebersicht_table.cellClicked.connect(self.uebergebeBewertung)
         self.view.krit1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit1_lineEdit,"Kriterium 1"))
@@ -38,6 +38,7 @@ class TestatController():
         self.view.krit9_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.krit9_lineEdit,"Kriterium 9"))
         self.view.abzug1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug1_lineEdit,"Abzug 1"))
         self.view.abzug2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug2_lineEdit,"Abzug 2"))
+        self.view.grenze_spinBox.valueChanged.connect(self.neueGrenzeErhalten)
         self.view.bemerkung_lineEdit.editingFinished.connect(partial(self.speichereBemerkung,self.view.bemerkung_lineEdit))
         self.view.pdfExport_btn.clicked.connect(self.erzeugePDF)
 
@@ -47,10 +48,11 @@ class TestatController():
             if 'tucan' in filename[0].lower():
                 self.model.ladeTucanListe(filename[0])
                 self.view.zeigeLadenHaken(self.view.TucanListeLaden_btn)
-                self.view.zeigeAnzahl(self.view.AnzahlTucanTeilnehmer_label, self.model.tucanliste.shape[0])
+                self.view.fuelleLabel(self.view.AnzahlTucanTeilnehmer_label, self.model.tucanliste.shape[0])
                 if hasattr(self.model, 'moodleliste'):
                     self.model.erstelleBewertungsUebersicht()
                     self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
+                    self.uebergebeStatistik()
             else:
                 self.view.falscheListeFenster('TUCaN')    
         except:
@@ -62,10 +64,11 @@ class TestatController():
             if 'moodle' in filename[0].lower():
                 self.model.ladeMoodleListe(filename[0])
                 self.view.zeigeLadenHaken(self.view.MoodleListeLaden_btn)
-                self.view.zeigeAnzahl(self.view.AnzahlMoodleTeilnehmer_label, self.model.moodleliste.shape[0])
+                self.view.fuelleLabel(self.view.AnzahlMoodleTeilnehmer_label, self.model.moodleliste.shape[0])
                 if hasattr(self.model, 'tucanliste'):
                     self.model.erstelleBewertungsUebersichtAusListen()
                     self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
+                    self.uebergebeStatistik()
             else:
                 self.view.falscheListeFenster('Moodle')  
         except:
@@ -75,46 +78,74 @@ class TestatController():
         path = self.view.folderDialog()
         if path:
             self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
-            anzahlAbgaben = self.model.ladeBatch(path)
-            self.view.zeigeAnzahl(self.view.AnzahlAbgaben_label, anzahlAbgaben)
+            anzahlAbgaben, fehler = self.model.ladeBatch(path)
+            self.view.fuelleLabel(self.view.fehler_label, fehler)
+            self.view.fuelleLabel(self.view.AnzahlAbgaben_label, anzahlAbgaben)
             self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
 
     def speichereAenderungen(self):
         self.model.speichereBewertungsUebersichtAlsCSV()
 
     def ladeSicherungsDatei(self):
-        pfad = self.view.fileDialog('csv')[0]
-        self.model.ladeBewertungsUebersichtAusCSV(pfad)
-        self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
-
-    def zeigeZusammenfassung(self):
-        self.model.erstelleZusammenfassung()
+        path = self.view.fileDialog('csv')[0]
+        if path:
+            self.model.ladeBewertungsUebersichtAusCSV(path)
+            self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
+            self.view.fuelleLabel(self.view.fehler_label, self.model.anzahlFehler())
+            self.uebergebeStatistik()
 
     def uebergebeBewertung(self, row, column):
-        self.view.aktiviereBewertungsdetails(True)
         self.geklickteMatrikelnummer = int(self.view.BewertungsUebersicht_table.item(row, 0).text())
         self.geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
 
         # Logik zum Aktivieren/Deaktivieren des Zur-Abgabe-Buttons
-        if self.geklickteZeile['Pfad'] == '':
-            self.view.zurAbgabe_btn.setEnabled(False)
+        if self.geklickteZeile['Pfad'] != '':
+            self.view.aktiviereBewertungsdetails(True)
         else:
-            self.view.zurAbgabe_btn.setEnabled(True)
+            self.view.aktiviereBewertungsdetails(False)
 
         # Fülle alle Bewertungsdetails des ausgewählten Studenten
         self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
 
+    def uebergebeStatistik(self):
+        anzahlAbgaben = self.model.anzahlInSpalte('Abgabe')
+        anzahlBestandenerAbgaben = self.model.anzahlInSpalte('Bestanden')
+        anzahlBewertet = self.model.anzahlBewertet()
+        anteilBestanden = ('%.2f' % (anzahlBestandenerAbgaben/anzahlBewertet * 100)) if anzahlBewertet != 0 else 0
+        gesamtPunktzahl = self.model.gesamtPunktzahl()
+        durchschnitt = round(gesamtPunktzahl/anzahlBewertet,2) if anzahlBewertet != 0 else 0
+        self.view.fuelleLabel(self.view.AnzahlAbgaben_label, anzahlAbgaben)
+        self.view.fuelleLabel(self.view.bestanden_label, f'{anzahlBestandenerAbgaben} ({anteilBestanden}%)')
+        self.view.fuelleLabel(self.view.unbewertet_label, anzahlAbgaben-anzahlBewertet)
+        self.view.fuelleLabel(self.view.bewertet_label, anzahlBewertet)    
+        self.view.fuelleLabel(self.view.durchschnitt_label, durchschnitt)
+
     def speichereKrit(self, lineEditObj, header):
-        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,header,lineEditObj.text())
+        self.model.updateBewertungsUebersichtZelle(self.geklickteMatrikelnummer,header,lineEditObj.text().replace(',','.'))
         df = self.model.bewertungsuebersicht.reset_index(drop=True)
         row = df[df['Matrikelnummer'] == self.geklickteMatrikelnummer].index[0] 
-        column = df.columns.get_loc("Punkte")
+        columnPunkte = df.columns.get_loc("Punkte")
         neueGesamtPunkte = self.model.bewertungsuebersicht.at[self.geklickteMatrikelnummer,'Punkte']
-        self.view.setzeBewertungsUebersichtZelle(row, column, neueGesamtPunkte)
-        self.view.setzePunktestandLabel(self.model.gesamtPunktzahl(self.geklickteMatrikelnummer))
+        self.view.setzeBewertungsUebersichtZelle(row, columnPunkte, neueGesamtPunkte)
+        columnBestanden = df.columns.get_loc("Bestanden")
+        neuerBestandenStatus = self.model.bewertungsuebersicht.at[self.geklickteMatrikelnummer,'Bestanden']
+        self.view.setzeBewertungsUebersichtZelle(row, columnBestanden, neuerBestandenStatus)
+        self.view.setzePunktestandLabel(self.model.gesamtPunktzahlStudent(self.geklickteMatrikelnummer))    
+
+        self.uebergebeStatistik()    
 
     def speichereBemerkung(self, lineEditObj):
-        self.model.updateBewertungsuebersicht(self.geklickteMatrikelnummer,f"Bemerkungen",lineEditObj.text())
+        self.model.updateBewertungsUebersichtZelle(self.geklickteMatrikelnummer,f"Bemerkungen",lineEditObj.text())
+
+    def neueGrenzeErhalten(self, newValue):
+        self.model.bestehensGrenze = newValue
+        rows = self.model.updateBestandenStatusAllerStudenten()
+        df = self.model.bewertungsuebersicht.reset_index(drop=True)
+        column = df.columns.get_loc("Bestanden")
+        for row in rows:
+            neuerBestandenStatus = df.at[row,'Bestanden']
+            self.view.setzeBewertungsUebersichtZelle(row, column, neuerBestandenStatus)
+        self.uebergebeStatistik()
 
     def rufeOrdnerImFileExplorer(self):
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])

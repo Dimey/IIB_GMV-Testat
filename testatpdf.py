@@ -9,7 +9,7 @@ class TestatPDF(FPDF):
 
         # Meta data
         self.set_title(f"Testatbewertung für {df['Vorname']} {df['Nachname']}")
-        self.set_author(f'Pascal Mosler')
+        self.set_author(f'GMV I WS21/22')
 
     def header(self):
         # IIB Logo
@@ -19,7 +19,7 @@ class TestatPDF(FPDF):
         # Title
         self.cell(w=0, h=8, txt='Geometrische Modellierung und Visualisierung I', border=False, ln=1, align='L')
         self.set_font('Arial', '', 14)
-        self.cell(w=130, h=8, txt='Wintersemester 2021/2022', align='L')
+        self.cell(w=130, h=7.2, txt='Wintersemester 2021/2022', align='L')
         # Line break
         self.ln(24)
 

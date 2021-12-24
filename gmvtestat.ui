@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>799</width>
+    <width>800</width>
     <height>990</height>
    </rect>
   </property>
@@ -89,6 +89,9 @@
     </column>
    </widget>
    <widget class="QPushButton" name="pushButton_8">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -102,6 +105,9 @@
     </property>
    </widget>
    <widget class="QLabel" name="label_5">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -114,7 +120,10 @@
      <string>Suchen:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="AenderungenSpeichern_btn">
+   <widget class="QPushButton" name="Speichern_btn">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>350</x>
@@ -124,10 +133,10 @@
      </rect>
     </property>
     <property name="text">
-     <string>Änderungen speichern</string>
+     <string>Speichern</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="LadeSicherungsDatei_btn">
+   <widget class="QPushButton" name="Laden_btn">
     <property name="geometry">
      <rect>
       <x>180</x>
@@ -137,46 +146,8 @@
      </rect>
     </property>
     <property name="text">
-     <string>Lade Sicherungsdatei</string>
+     <string>Laden</string>
     </property>
-   </widget>
-   <widget class="QTableWidget" name="tableWidget">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>30</y>
-      <width>261</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <row>
-     <property name="text">
-      <string>Checks erforderlich</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>Bewertete Abgaben</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>Bestandene Abgaben</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>Punktedurchschnitt</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>Letzte Bearbeitung</string>
-     </property>
-    </row>
    </widget>
    <widget class="QLineEdit" name="lineEdit">
     <property name="enabled">
@@ -251,24 +222,11 @@
       <string>PDF-Export</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="diffTool_btn">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>710</y>
-       <width>121</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Diff-Tool</string>
-     </property>
-    </widget>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
+       <y>70</y>
        <width>241</width>
        <height>161</height>
       </rect>
@@ -389,7 +347,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>230</y>
+       <y>240</y>
        <width>241</width>
        <height>131</height>
       </rect>
@@ -489,7 +447,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>370</y>
+       <y>380</y>
        <width>241</width>
        <height>91</height>
       </rect>
@@ -568,7 +526,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>470</y>
+       <y>480</y>
        <width>241</width>
        <height>91</height>
       </rect>
@@ -632,9 +590,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>580</y>
+       <y>590</y>
        <width>241</width>
-       <height>91</height>
+       <height>81</height>
       </rect>
      </property>
      <property name="alignment">
@@ -642,6 +600,22 @@
      </property>
      <property name="placeholderText">
       <string>Bemerkungen...</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="idCheck_btn">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>710</y>
+       <width>111</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>ID Check</string>
      </property>
     </widget>
    </widget>
@@ -725,6 +699,9 @@
           </item>
           <item>
            <widget class="QPushButton" name="BatchImportKpLaden_btn">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Laden</string>
             </property>
@@ -813,6 +790,32 @@
       </item>
      </layout>
     </widget>
+    <widget class="QLabel" name="label_38">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>100</y>
+       <width>51</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Fehler:</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="fehler_label">
+     <property name="geometry">
+      <rect>
+       <x>460</x>
+       <y>100</y>
+       <width>41</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="label_10">
     <property name="geometry">
@@ -840,10 +843,13 @@
     </property>
    </widget>
    <widget class="QSpinBox" name="grenze_spinBox">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>730</x>
-      <y>200</y>
+      <y>190</y>
       <width>41</width>
       <height>21</height>
      </rect>
@@ -858,11 +864,14 @@
      <number>15</number>
     </property>
    </widget>
-   <widget class="QLabel" name="label_12">
+   <widget class="QLabel" name="grenze_label">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>200</y>
+      <y>190</y>
       <width>181</width>
       <height>16</height>
      </rect>
@@ -871,18 +880,127 @@
      <string>Bestehensgrenze anpassen:</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="diffTool_btn">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>420</x>
       <y>220</y>
       <width>101</width>
-      <height>31</height>
+      <height>32</height>
      </rect>
     </property>
     <property name="text">
-     <string>ID Check</string>
+     <string>Diff-Tool</string>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_6">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>20</y>
+      <width>261</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Statistik</string>
+    </property>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>241</width>
+       <height>116</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_16">
+        <item>
+         <widget class="QLabel" name="label_37">
+          <property name="text">
+           <string>Unbewertet:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_28">
+          <property name="text">
+           <string>Bewertet:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_35">
+          <property name="text">
+           <string>Bestanden:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Punktedurchschnitt:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_36">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Letzte Bearbeitung:</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_17">
+        <item>
+         <widget class="QLabel" name="unbewertet_label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="bewertet_label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="bestanden_label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="durchschnitt_label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="zuletztBearbeitet_label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </widget>
   </widget>
   <action name="actionHallo">
