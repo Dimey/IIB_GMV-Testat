@@ -80,6 +80,12 @@ class GMVTestat(QtWidgets.QMainWindow):
     def fuelleLabel(self, label, newValue):
         label.setText(f'{newValue}')
 
+    def fuelleLineEdit(self, lineEdit, newValue):
+        if isinstance(newValue, str):
+            lineEdit.setText(newValue)
+        else:
+            lineEdit.setText(f'{newValue:g}')
+
     def aktiviereBewertungsdetails(self, istAktiv):
         self.bewertungsdetails_groupBox.setEnabled(istAktiv)
         self.idCheck_btn.setEnabled(False)
@@ -89,23 +95,24 @@ class GMVTestat(QtWidgets.QMainWindow):
         self.grenze_spinBox.setEnabled(istAktiv)
 
     def aktiviereSpeichernUndBatchImportBtn(self, istAktiv):
-        self.speichern_btn.setEnabled(istAktiv)
+        self.Speichern_btn.setEnabled(istAktiv)
         self.BatchImportKpLaden_btn.setEnabled(istAktiv)
 
     def fuelleBewertungsDetails(self, geklickteZeile):
-        self.krit1_lineEdit.setText(str(geklickteZeile["Kriterium 1"]))
-        self.krit2_lineEdit.setText(str(geklickteZeile["Kriterium 2"]))
-        self.krit3_lineEdit.setText(str(geklickteZeile["Kriterium 3"]))
-        self.krit4_lineEdit.setText(str(geklickteZeile["Kriterium 4"]))
-        self.krit5_lineEdit.setText(str(geklickteZeile["Kriterium 5"]))
-        self.krit6_lineEdit.setText(str(geklickteZeile["Kriterium 6"]))
-        self.krit7_lineEdit.setText(str(geklickteZeile["Kriterium 7"]))
-        self.krit8_lineEdit.setText(str(geklickteZeile["Kriterium 8"]))
-        self.krit9_lineEdit.setText(str(geklickteZeile["Kriterium 9"]))
-        self.abzug1_lineEdit.setText(str(geklickteZeile["Abzug 1"]))
-        self.abzug2_lineEdit.setText(str(geklickteZeile["Abzug 2"]))
+        self.fuelleLineEdit(self.krit1_lineEdit, geklickteZeile["Kriterium 1"])
+        self.fuelleLineEdit(self.krit2_lineEdit, geklickteZeile["Kriterium 2"])
+        self.fuelleLineEdit(self.krit3_lineEdit, geklickteZeile["Kriterium 3"])
+        self.fuelleLineEdit(self.krit4_lineEdit, geklickteZeile["Kriterium 4"])
+        self.fuelleLineEdit(self.krit5_lineEdit, geklickteZeile["Kriterium 5"])
+        self.fuelleLineEdit(self.krit6_lineEdit, geklickteZeile["Kriterium 6"])
+        self.fuelleLineEdit(self.krit7_lineEdit, geklickteZeile["Kriterium 7"])
+        self.fuelleLineEdit(self.krit8_lineEdit, geklickteZeile["Kriterium 8"])
+        self.fuelleLineEdit(self.krit9_lineEdit, geklickteZeile["Kriterium 9"])
+        self.fuelleLineEdit(self.abzug1_lineEdit, geklickteZeile["Abzug 1"])
+        self.fuelleLineEdit(self.abzug2_lineEdit, geklickteZeile["Abzug 2"])
+
         self.bemerkung_lineEdit.setText(str(geklickteZeile["Bemerkungen"]))
-        self.setzePunktestandLabel(str(geklickteZeile['Punkte']))
+        self.setzePunktestandLabel(geklickteZeile['Punkte'])
 
     def setzePunktestandLabel(self, punkte):
         text = f'<html><head/><body><p><span style=" font-size:14pt; font-weight:600;">Gesamtpunktzahl: {punkte} / 30.0 P</span></p></body></html>'

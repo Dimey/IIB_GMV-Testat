@@ -11,6 +11,7 @@ class TestatData():
     def __init__(self):
         super(TestatData, self).__init__() 
         self.bestehensGrenze = 15
+        self.wertungsSchluessel = [1.5, 1, 1, 1, 0.5, 0.25, 0.625, 1, 0.375, 1, 1]
         self.variationsMatrix = [
             [7, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9],
             [2.71, 2.72, 2.73, 2.74, 2.75, 2.76, 2.77, 2.78, 2.79, 2.7],
@@ -139,14 +140,14 @@ class TestatData():
         return df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index 
 
     def gesamtPunktzahlStudent(self, matrikelnummer):
-        wertungsSchluessel = [1.5, 1, 1, 1, 0.5, 0.25, 0.625, 1, 0.375, 1, 1]
-        return (pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Abzug 2'])*wertungsSchluessel).sum()
+        return (pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Abzug 2'])*self.wertungsSchluessel).sum()
 
     def gesamtPunktzahl(self):
         return pd.to_numeric(self.bewertungsuebersicht.Punkte).sum()
 
     def exportPDF(self, matrikelNummer):
         df = self.bewertungsuebersicht.loc[matrikelNummer]
-        pdf = TestatPDF2(df)
+        ws = self.wertungsSchluessel
+        pdf = TestatPDF2(df,ws)
         pdf.output(f"{df['Pfad']}/{matrikelNummer}.pdf")
         return 0
