@@ -53,8 +53,7 @@ class TestatView(QtWidgets.QMainWindow):
         return QtWidgets.QFileDialog.getExistingDirectory(self, caption='Öffne den Ordner mit den Moodle-Abgaben')
 
     def fuelleBewertungsUebersicht(self, bewertungsuebersicht):
-        self.aktiviereBestehensgrenzeRegler(True)
-        self.aktiviereSpeichernUndBatchImportBtn(True)
+        self.aktiviereUIElementeNachUebersichtBefuellung()
         self.BewertungsUebersicht_table.setRowCount(bewertungsuebersicht.shape[0])
         bewertungsuebersichtArray = bewertungsuebersicht.to_numpy()
         for idx, value in np.ndenumerate(bewertungsuebersichtArray):
@@ -88,15 +87,13 @@ class TestatView(QtWidgets.QMainWindow):
 
     def aktiviereBewertungsdetails(self, istAktiv):
         self.bewertungsdetails_groupBox.setEnabled(istAktiv)
-        self.idCheck_btn.setEnabled(False)
 
-    def aktiviereBestehensgrenzeRegler(self, istAktiv):
-        self.grenze_label.setEnabled(istAktiv)
-        self.grenze_spinBox.setEnabled(istAktiv)
-
-    def aktiviereSpeichernUndBatchImportBtn(self, istAktiv):
-        self.Speichern_btn.setEnabled(istAktiv)
-        self.BatchImportKpLaden_btn.setEnabled(istAktiv)
+    def aktiviereUIElementeNachUebersichtBefuellung(self):
+        self.grenze_label.setEnabled(True)
+        self.grenze_spinBox.setEnabled(True)
+        self.Speichern_btn.setEnabled(True)
+        self.BatchImportKpLaden_btn.setEnabled(True)
+        self.batchPDF_btn.setEnabled(True)
 
     def fuelleBewertungsDetails(self, geklickteZeile):
         self.fuelleLineEdit(self.krit1_lineEdit, geklickteZeile["Kriterium 1"])
@@ -123,6 +120,12 @@ class TestatView(QtWidgets.QMainWindow):
 
     def pdfStatusFenster(self, pdfStatus):
         pass
+
+    def infoFenster(self, text):
+        box = QtWidgets.QMessageBox(self)
+        box.setWindowTitle('Info')
+        box.setText(text)
+        box.exec()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

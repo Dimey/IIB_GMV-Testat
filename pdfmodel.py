@@ -46,7 +46,7 @@ class PDFModel(FPDF):
         self.set_font(family='Arial', style='I', size=10)
         self.set_text_color(0,0,0)
         # Set text
-        self.cell(w=0, h=8, txt=f'Testat bewertet am {str(datetime.datetime.now())[0:19]}', align='C')
+        self.cell(w=0, h=8, txt=f'Dokument erzeugt am {str(datetime.datetime.now())[0:19]}', align='C')
 
     def emptyLine(self):
         self.cell(w=0, h=self.cellHeight, border=True, ln=1)
@@ -89,21 +89,21 @@ class PDFModel(FPDF):
 
     def grading(self, punkteGesamt, bestehensGrenze):
         self.set_font(family=self.font, style='', size=self.textHeight)
-        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt='', align='L', border='LTR')
+        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt='Summe', align='L', border='LTR')
         self.set_font(family=self.font, style='B', size=self.textHeight)
         self.cell(w=15.5, h=self.cellHeight, txt=f'{punkteGesamt}', align='R', border='T')
         self.set_font(family=self.font, style='', size=self.textHeight)
         self.cell(w=3.1, h=self.cellHeight, txt='/', align='C', border='T')
         self.cell(w=15.5, h=self.cellHeight, txt='30', align='L', border='TR', ln=1)
 
-        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt='', align='L', border='LBR')
+        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt=f'Bestehensgrenze: {self.bestehensGrenze}', align='L', border='LBRT')
         self.set_font(family=self.font, style='B', size=self.textHeight-1)
         if punkteGesamt >= bestehensGrenze:
             self.set_text_color(102,164,99)
-            self.cell(w=34.1, h=self.cellHeight, txt=f'BESTANDEN', align='C', border='LBR', ln=1)
+            self.cell(w=34.1, h=self.cellHeight, txt=f'BESTANDEN', align='C', border='LBRT', ln=1)
         else:
             self.set_text_color(191,70,39)
-            self.cell(w=34.1, h=self.cellHeight, txt=f'NICHT BESTANDEN', align='C', border='LBR', ln=1)
+            self.cell(w=34.1, h=self.cellHeight, txt=f'NICHT BESTANDEN', align='C', border='LBRT', ln=1)
 
     def constructPDF(self, df):
         # Add a page
@@ -114,7 +114,7 @@ class PDFModel(FPDF):
 
         # Id + name
         self.twoPartCell_param('Matrikelnummer', f"{self.data['Matrikelnummer']}")
-        self.twoPartCell_param('Name', f"{self.data['Vorname']} {self.data['Nachname']}")
+        self.twoPartCell_param('Name', f"{self.data['Nachname']}, {self.data['Vorname']}")
         self.emptyLine()
 
         # Task 1

@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from shutil import copytree
-import datetime
 import os
 from fpdf import FPDF
 from pdfmodel import PDFModel
@@ -49,6 +48,7 @@ class TestatModel():
         'Pfad']] = ''
         teilnehmerliste[['Abgabe', 'Bestanden']] = 'Nein'
         self.bewertungsuebersicht = teilnehmerliste.set_index('Matrikelnummer',drop=False)
+        self.bewertungsuebersicht.sort_values(by=['Nachname', 'Vorname'], inplace=True)
 
     def speichereBewertungsUebersichtAlsCSV(self):
         self.bewertungsuebersicht.to_csv('Ressources/Testat1_Bewertungsuebersicht_SensibleDaten.csv',index=False)
@@ -60,11 +60,10 @@ class TestatModel():
         konstruktionsprotokolleListe = []
         abgabenZaehler = 0
         fehlerZaehler = 0
-        datum = datetime.datetime.now()
         # Ordnername für die Kopie aller Abgaben
-        folderNameCopy = f"Testatabgaben_{datum.day}{datum.month}{datum.year}"
+        folderNameCopy = f"Testatabgaben_Kopie"
         if not os.path.isdir(folderNameCopy): # Wenn noch keine Abgaben-Kopie vorhanden
-            print("Kopie wurde angelegt.")
+            print("Kopie wurde angelegt.") # TODO: Infofenster nachrüsten
             copytree(f"{path}", folderNameCopy)
         else:
             print("Es besteht bereits eine Abgaben-Kopie.")
@@ -85,11 +84,11 @@ class TestatModel():
                             if anzahlFalscheKriterien == 0:
                                 self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [0, ' \\n \\n ']
                             if anzahlFalscheKriterien == 1:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-0,'1 falsche Wertanpassung \\n \\n ']
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-0,'Ein Wert entspricht nicht der Matrikelnummer (kein Abzug). \\n \\n ']
                             if anzahlFalscheKriterien == 2:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-2,'2 falsche Wertanpassungen \\n \\n ']
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-2,'Zwei Werte entsprechen nicht der Matrikelnummer. \\n \\n ']
                             if anzahlFalscheKriterien == 3:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-4,'3 falsche Wertanpassungen \\n \\n ']
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-4,'Drei Werte entsprechen nicht der Matrikelnummer. \\n \\n ']
                         except:
                             # Weise Abgabenstatus (=Fehler) zu
                             self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Fehler',f'{folderNameCopy}/{foldername}']

@@ -41,6 +41,7 @@ class TestatController():
         self.view.grenze_spinBox.valueChanged.connect(self.neueGrenzeErhalten)
         self.view.bemerkung_lineEdit.editingFinished.connect(partial(self.speichereBemerkung,self.view.bemerkung_lineEdit))
         self.view.pdfExport_btn.clicked.connect(self.erzeugePDF)
+        self.view.batchPDF_btn.clicked.connect(self.erzeugeBatchPDF)
 
     def oeffneTucanListe(self):
         try:
@@ -153,3 +154,11 @@ class TestatController():
     def erzeugePDF(self):
         pdfStatus = self.model.exportPDF(self.geklickteMatrikelnummer)
         self.view.pdfStatusFenster(pdfStatus)
+
+    def erzeugeBatchPDF(self):
+        df = self.model.bewertungsuebersicht
+        matrikelNummern = df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index
+
+        for matrikelNummer in matrikelNummern:
+            self.geklickteMatrikelnummer = matrikelNummer
+            self.erzeugePDF()

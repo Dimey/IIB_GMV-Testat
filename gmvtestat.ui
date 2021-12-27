@@ -88,7 +88,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QPushButton" name="pushButton_8">
+   <widget class="QPushButton" name="batchPDF_btn">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -602,7 +602,7 @@
       <string>Bemerkungen...</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="idCheck_btn">
+    <widget class="QPushButton" name="diffTool_btn">
      <property name="enabled">
       <bool>false</bool>
      </property>
@@ -615,7 +615,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>ID Check</string>
+      <string>Diff-Tool</string>
      </property>
     </widget>
    </widget>
@@ -878,22 +878,6 @@
     </property>
     <property name="text">
      <string>Bestehensgrenze anpassen:</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="diffTool_btn">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>220</y>
-      <width>101</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Diff-Tool</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox_6">
