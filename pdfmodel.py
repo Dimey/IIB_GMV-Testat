@@ -2,10 +2,11 @@ import datetime
 import pandas as pd
 from fpdf import FPDF
 
-class TestatPDF2(FPDF):
-    def __init__(self, df, ws):
+class PDFModel(FPDF):
+    def __init__(self, df, ws, bg):
         super().__init__('P','mm')
         self.data = df
+        self.bestehensGrenze = bg
 
         # Meta data
         self.set_title(f"Testatbewertung für {df['Vorname']} {df['Nachname']}")
@@ -86,10 +87,7 @@ class TestatPDF2(FPDF):
         self.set_font(family=family, style=style, size=self.textHeight)
         self.cell(w=0, h=self.cellHeight, txt=f'{txt1}', align=align, border=False, ln=1)
 
-    def grading(self):
-        bestehensGrenze = 15
-        punkteGesamt = 14
-
+    def grading(self, punkteGesamt, bestehensGrenze):
         self.set_font(family=self.font, style='', size=self.textHeight)
         self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt='', align='L', border='LTR')
         self.set_font(family=self.font, style='B', size=self.textHeight)
@@ -100,7 +98,7 @@ class TestatPDF2(FPDF):
 
         self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt='', align='L', border='LBR')
         self.set_font(family=self.font, style='B', size=self.textHeight-1)
-        if punkteGesamt > bestehensGrenze:
+        if punkteGesamt >= bestehensGrenze:
             self.set_text_color(102,164,99)
             self.cell(w=34.1, h=self.cellHeight, txt=f'BESTANDEN', align='C', border='LBR', ln=1)
         else:
@@ -147,7 +145,7 @@ class TestatPDF2(FPDF):
         self.emptyLine()
 
         # Grading
-        self.grading()
+        self.grading(self.data['Punkte'], self.bestehensGrenze)
         self.set_text_color(0,0,0)
 
         # Notes

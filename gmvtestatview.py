@@ -2,12 +2,12 @@ from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import sys
 import subprocess       
 from gmvtestatcontroller import TestatController
-from gmvtestatmodel import TestatData
+from gmvtestatmodel import TestatModel
 import numpy as np
 
-class GMVTestat(QtWidgets.QMainWindow):
+class TestatView(QtWidgets.QMainWindow):
     def __init__(self):
-        super(GMVTestat, self).__init__()
+        super(TestatView, self).__init__()
         uic.loadUi('gmvtestat.ui', self)
         self.konfigUI()
         
@@ -128,7 +128,7 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('macintosh')
     
-    view = GMVTestat()
-    model = TestatData()
+    view = TestatView()
+    model = TestatModel()
     controller = TestatController(model, view)
     sys.exit(app.exec())

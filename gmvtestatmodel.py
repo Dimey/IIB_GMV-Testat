@@ -4,18 +4,17 @@ from shutil import copytree
 import datetime
 import os
 from fpdf import FPDF
-from testatpdf import TestatPDF
-from testatpdf_v2 import TestatPDF2
+from pdfmodel import PDFModel
 
-class TestatData():
+class TestatModel():
     def __init__(self):
-        super(TestatData, self).__init__() 
+        super(TestatModel, self).__init__() 
         self.bestehensGrenze = 15
         self.wertungsSchluessel = [1.5, 1, 1, 1, 0.5, 0.25, 0.625, 1, 0.375, 1, 1]
         self.variationsMatrix = [
             [7, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9],
             [2.71, 2.72, 2.73, 2.74, 2.75, 2.76, 2.77, 2.78, 2.79, 2.7],
-            [-5.2, -5.3, -5.4, -5.5, -5.6, -5.7, -5.8, -5.9, -5, -5.1]]
+            [-5.2, -5.3, -5.4, -5.5, -5.6, -5.7, -5.8, -5.9, -5, -5.1]]       
 
     def ladeTucanListe(self, pfad):
         tucanliste = pd.read_excel(pfad, header = None)
@@ -61,7 +60,6 @@ class TestatData():
         konstruktionsprotokolleListe = []
         abgabenZaehler = 0
         fehlerZaehler = 0
-        schiebereglerFehler = 0
         datum = datetime.datetime.now()
         # Ordnername für die Kopie aller Abgaben
         folderNameCopy = f"Testatabgaben_{datum.day}{datum.month}{datum.year}"
@@ -83,8 +81,15 @@ class TestatData():
                             kp = pd.read_html(f"{path}/{foldername}/{filename}")[0]
                             # Weise Abgabenstatus (=Ja) zu
                             self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Ja',f'{folderNameCopy}/{foldername}']
-                            if self.idCheck(kp, werte) == False:
-                                schiebereglerFehler += 1
+                            anzahlFalscheKriterien = self.idCheck(kp, werte)
+                            if anzahlFalscheKriterien == 0:
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [0, ' \\n \\n ']
+                            if anzahlFalscheKriterien == 1:
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-0,'1 falsche Wertanpassung \\n \\n ']
+                            if anzahlFalscheKriterien == 2:
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-2,'2 falsche Wertanpassungen \\n \\n ']
+                            if anzahlFalscheKriterien == 3:
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-4,'3 falsche Wertanpassungen \\n \\n ']
                         except:
                             # Weise Abgabenstatus (=Fehler) zu
                             self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Fehler',f'{folderNameCopy}/{foldername}']
@@ -97,7 +102,6 @@ class TestatData():
                         # kp.to_xml(f"konstruktionsprotokolle.xml",index=False,root_name=f"id{filename[0:-5]}")
                         # Werte KP aus
                         # self.bepunkteKP(kp)
-        print(schiebereglerFehler)
         return abgabenZaehler, fehlerZaehler
 
     def extrahiereWerteVonZiffern(self, matrikelnummer):
@@ -105,10 +109,12 @@ class TestatData():
         return [self.variationsMatrix[0][int(E)], self.variationsMatrix[1][int(F)], self.variationsMatrix[2][int(G)]] 
 
     def idCheck(self, kp, werte):
+        # Gibt Anzahl falscher Kriterien zurück
+        werteStudent = kp['Wert'].unique()
         schieberegler, zKoordinate, ebenenHoehe = werte[0], werte[1], werte[2]
-        check = f'SchiebereglerE = {schieberegler}' in kp['Wert'].unique()
-        return check
-        # return: 0 / -0 / -2 / -4 / -30
+        return 3 - np.count_nonzero((np.where((werteStudent == f'SchiebereglerE = {schieberegler}') |
+        (werteStudent == f'Augpunkt = (2.75, -2.49, {zKoordinate})'), True, False)) |
+        (pd.Series(werteStudent).str.slice(start=4).str.match(f'z = {ebenenHoehe}')))
 
     def anzahlFehler(self):
         df = self.bewertungsuebersicht
@@ -148,6 +154,7 @@ class TestatData():
     def exportPDF(self, matrikelNummer):
         df = self.bewertungsuebersicht.loc[matrikelNummer]
         ws = self.wertungsSchluessel
-        pdf = TestatPDF2(df,ws)
+        bg = self.bestehensGrenze
+        pdf = PDFModel(df,ws,bg)
         pdf.output(f"{df['Pfad']}/{matrikelNummer}.pdf")
         return 0
