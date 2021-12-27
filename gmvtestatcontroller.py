@@ -157,8 +157,11 @@ class TestatController():
 
     def erzeugeBatchPDF(self):
         df = self.model.bewertungsuebersicht
+        matrikelNummerAlt = self.geklickteMatrikelnummer
         matrikelNummern = df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index
 
         for matrikelNummer in matrikelNummern:
             self.geklickteMatrikelnummer = matrikelNummer
             self.erzeugePDF()
+
+        self.geklickteMatrikelnummer = matrikelNummerAlt
