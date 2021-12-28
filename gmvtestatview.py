@@ -1,6 +1,7 @@
 import os
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import sys
+import os
 import subprocess       
 from gmvtestatcontroller import TestatController
 from gmvtestatmodel import TestatModel
@@ -117,11 +118,19 @@ class TestatView(QtWidgets.QMainWindow):
         self.gesamtpunktzahl_label.setText(text)
 
     def zeigeOrdnerImFinder(self, pfad):
+<<<<<<< HEAD
             if os.name == 'nt':
                 winpfad = pfad.replace("/", "\\")
                 subprocess.call(f"explorer {winpfad}")
             else:
                 subprocess.call(["open", "-R", pfad])
+=======
+        if os.name == 'nt':
+            winpfad = pfad.replace("/", "\\")
+            subprocess.call(f"explorer {winpfad}")
+        else:
+            subprocess.call(["open", "-R", pfad])
+>>>>>>> b08828ca347dd8e4d4529c3c575a13c594164e6c
 
     def pdfStatusFenster(self, pdfStatus):
         pass
