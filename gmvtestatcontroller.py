@@ -102,11 +102,10 @@ class TestatController():
         # Logik zum Aktivieren/Deaktivieren des Zur-Abgabe-Buttons
         if self.geklickteZeile['Pfad'] != '':
             self.view.aktiviereBewertungsdetails(True)
+            # Fülle alle Bewertungsdetails des ausgewählten Studenten
+            self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
         else:
             self.view.aktiviereBewertungsdetails(False)
-
-        # Fülle alle Bewertungsdetails des ausgewählten Studenten
-        self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
 
     def uebergebeStatistik(self):
         anzahlAbgaben = self.model.anzahlInSpalte('Abgabe')

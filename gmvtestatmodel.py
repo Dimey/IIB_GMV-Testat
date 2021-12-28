@@ -145,7 +145,7 @@ class TestatModel():
         return df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index 
 
     def gesamtPunktzahlStudent(self, matrikelnummer):
-        return (pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Abzug 2'])*self.wertungsSchluessel).sum()
+        return np.clip((pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Abzug 2'])*self.wertungsSchluessel).sum(), a_min=0, a_max=None)
 
     def gesamtPunktzahl(self):
         return pd.to_numeric(self.bewertungsuebersicht.Punkte).sum()

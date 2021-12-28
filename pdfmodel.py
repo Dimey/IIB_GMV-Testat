@@ -104,6 +104,7 @@ class PDFModel(FPDF):
         else:
             self.set_text_color(191,70,39)
             self.cell(w=34.1, h=self.cellHeight, txt=f'NICHT BESTANDEN', align='C', border='LBRT', ln=1)
+        self.set_text_color(0,0,0)
 
     def constructPDF(self, df):
         # Add a page
@@ -146,7 +147,6 @@ class PDFModel(FPDF):
 
         # Grading
         self.grading(self.data['Punkte'], self.bestehensGrenze)
-        self.set_text_color(0,0,0)
 
         # Notes
         self.twoPartCell_notes(self.data['Bemerkungen'])
