@@ -1,3 +1,4 @@
+import os
 from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import sys
 import subprocess       
@@ -116,7 +117,11 @@ class TestatView(QtWidgets.QMainWindow):
         self.gesamtpunktzahl_label.setText(text)
 
     def zeigeOrdnerImFinder(self, pfad):
-        subprocess.call(["open", "-R", pfad])
+            if os.name == 'nt':
+                winpfad = pfad.replace("/", "\\")
+                subprocess.call(f"explorer {winpfad}")
+            else:
+                subprocess.call(["open", "-R", pfad])
 
     def pdfStatusFenster(self, pdfStatus):
         pass
