@@ -10,7 +10,10 @@ import numpy as np
 class TestatView(QtWidgets.QMainWindow):
     def __init__(self):
         super(TestatView, self).__init__()
-        uic.loadUi('gmvtestat.ui', self)
+        if os.name == 'nt':
+            uic.loadUi('gmvtestat_win.ui', self)
+        else:
+            uic.loadUi('gmvtestat.ui', self)
         self.konfigUI()
         
         self.show()
@@ -109,12 +112,11 @@ class TestatView(QtWidgets.QMainWindow):
         self.fuelleLineEdit(self.krit9_lineEdit, geklickteZeile["Kriterium 9"])
         self.fuelleLineEdit(self.abzug1_lineEdit, geklickteZeile["Abzug 1"])
         self.fuelleLineEdit(self.abzug2_lineEdit, geklickteZeile["Abzug 2"])
-
-        self.bemerkung_lineEdit.setText(str(geklickteZeile["Bemerkungen"]))
+        self.bemerkung_plainTextEdit.setPlainText(geklickteZeile['Bemerkungen'])
         self.setzePunktestandLabel(geklickteZeile['Punkte'])
 
     def setzePunktestandLabel(self, punkte):
-        text = f'<html><head/><body><p><span style=" font-size:14pt; font-weight:600;">Gesamtpunktzahl: {punkte} / 30.0 P</span></p></body></html>'
+        text = f'Gesamtpunktzahl: {punkte} / 30.0 P'
         self.gesamtpunktzahl_label.setText(text)
 
     def zeigeOrdnerImFinder(self, pfad):

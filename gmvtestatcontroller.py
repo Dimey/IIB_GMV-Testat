@@ -39,9 +39,9 @@ class TestatController():
         self.view.abzug1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug1_lineEdit,"Abzug 1"))
         self.view.abzug2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug2_lineEdit,"Abzug 2"))
         self.view.grenze_spinBox.valueChanged.connect(self.neueGrenzeErhalten)
-        self.view.bemerkung_lineEdit.editingFinished.connect(partial(self.speichereBemerkung,self.view.bemerkung_lineEdit))
         self.view.pdfExport_btn.clicked.connect(partial(self.erzeugePDF, True))
         self.view.batchPDF_btn.clicked.connect(self.erzeugeBatchPDF)
+        self.view.bemerkung_plainTextEdit.textChanged.connect(partial(self.speichereBemerkungTextEdit, self.view.bemerkung_plainTextEdit))
 
     def oeffneTucanListe(self):
         try:
@@ -135,8 +135,8 @@ class TestatController():
 
         self.uebergebeStatistik()    
 
-    def speichereBemerkung(self, lineEditObj):
-        self.model.updateBewertungsUebersichtZelle(self.geklickteMatrikelnummer,f"Bemerkungen",lineEditObj.text())
+    def speichereBemerkungTextEdit(self, textEditObj):
+        self.model.updateBewertungsUebersichtZelle(self.geklickteMatrikelnummer,f"Bemerkungen",textEditObj.toPlainText())
 
     def neueGrenzeErhalten(self, newValue):
         self.model.bestehensGrenze = newValue

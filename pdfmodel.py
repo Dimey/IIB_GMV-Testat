@@ -22,6 +22,7 @@ class PDFModel(FPDF):
         self.cellWidthRight = 26.1
         self.font = 'Courier'
 
+        self.set_auto_page_break(auto=False)
         self.set_left_margin(20)
         self.set_right_margin(20)
         self.set_top_margin(20)
@@ -74,10 +75,15 @@ class PDFModel(FPDF):
 
     def twoPartCell_notes(self, txt1):
         self.set_font(family=self.font, style='', size=self.textHeight)
-        self.multi_cell(w=self.cellWidthLeftPart, h=self.cellHeight, txt='Bemerkungen\n \n ', align='L', border=True)
+        self.multi_cell(w=self.cellWidthLeftPart, h=self.cellHeight, txt='Bemerkungen\n \n \n ', align='L', border=True)
         self.set_font(family=self.font, style='B', size=self.textHeight-2)
-        self.set_xy(20+self.cellWidthLeftPart, self.get_y()-3*self.cellHeight)
-        self.multi_cell(w=self.cellMaxWidth-self.cellWidthLeftPart, h=self.cellHeight, txt=txt1.replace(r'\n', '\n'), align='L', border=True)
+        x = 20+self.cellWidthLeftPart
+        y = self.get_y()-4*self.cellHeight
+        self.set_xy(x, y)
+        #TODO: ".replace('\n', '')" entfernen
+        self.multi_cell(w=self.cellMaxWidth-self.cellWidthLeftPart, h=self.cellHeight, txt=str(txt1).replace(u'\u000A', '\n').replace(r'\n', ''), align='L', border=False)
+        self.set_xy(x, y)
+        self.cell(w=self.cellMaxWidth-self.cellWidthLeftPart, h=self.cellHeight*4, border=True, ln=1)
 
     def taskTitle(self, title):
         self.set_font(family=self.font, style='U', size=self.textHeight)

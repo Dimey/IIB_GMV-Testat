@@ -82,13 +82,13 @@ class TestatModel():
                             self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Ja',f'{folderNameCopy}/{foldername}']
                             anzahlFalscheKriterien = self.idCheck(kp, werte)
                             if anzahlFalscheKriterien == 0:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [0, ' \\n \\n ']
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [0, 'Keine']
                             if anzahlFalscheKriterien == 1:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-0,'Ein Wert entspricht nicht der Matrikelnummer (kein Abzug). \\n \\n ']
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-0,'Ein Wert entspricht nicht der Matrikelnummer (kein Abzug).']
                             if anzahlFalscheKriterien == 2:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-2,'Zwei Werte entsprechen nicht der Matrikelnummer. \\n \\n ']
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-2,'Zwei Werte entsprechen nicht der Matrikelnummer.']
                             if anzahlFalscheKriterien == 3:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-4,'Drei Werte entsprechen nicht der Matrikelnummer. \\n \\n ']
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-4,'Drei Werte entsprechen nicht der Matrikelnummer.']
                         except:
                             # Weise Abgabenstatus (=Fehler) zu
                             self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Fehler',f'{folderNameCopy}/{foldername}']
@@ -148,4 +148,7 @@ class TestatModel():
         ws = self.wertungsSchluessel
         bg = self.bestehensGrenze
         pdf = PDFModel(df,ws,bg)
-        pdf.output(f"{df['Pfad']}/{matrikelNummer}.pdf")
+        if df['Pfad'] != '':
+            pdf.output(f"{df['Pfad']}/{matrikelNummer}.pdf")
+        else:    
+            pdf.output(f"{matrikelNummer}.pdf")
