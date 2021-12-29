@@ -28,9 +28,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>260</y>
+      <y>240</y>
       <width>511</width>
-      <height>681</height>
+      <height>701</height>
      </rect>
     </property>
     <property name="selectionBehavior">
@@ -104,22 +104,6 @@
      <string>Batch-PDF-Export</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>230</y>
-      <width>61</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Suchen:</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="Speichern_btn">
     <property name="enabled">
      <bool>false</bool>
@@ -147,19 +131,6 @@
     </property>
     <property name="text">
      <string>Laden</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>230</y>
-      <width>301</width>
-      <height>21</height>
-     </rect>
     </property>
    </widget>
    <widget class="QGroupBox" name="bewertungsdetails_groupBox">
@@ -199,8 +170,15 @@
        <height>20</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;Gesamtpunktzahl: 0 / 30.0 P&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>Gesamtpunktzahl: 0 / 30.0 P</string>
      </property>
      <property name="textFormat">
       <enum>Qt::MarkdownText</enum>
@@ -586,22 +564,6 @@
       </layout>
      </widget>
     </widget>
-    <widget class="QLineEdit" name="bemerkung_lineEdit">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>590</y>
-       <width>241</width>
-       <height>81</height>
-      </rect>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="placeholderText">
-      <string>Bemerkungen...</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="diffTool_btn">
      <property name="enabled">
       <bool>false</bool>
@@ -616,6 +578,21 @@
      </property>
      <property name="text">
       <string>Diff-Tool</string>
+     </property>
+    </widget>
+    <widget class="QPlainTextEdit" name="bemerkung_plainTextEdit">
+     <property name="geometry">
+      <rect>
+       <x>13</x>
+       <y>590</y>
+       <width>241</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Courier New</family>
+      </font>
      </property>
     </widget>
    </widget>
@@ -826,8 +803,15 @@
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>22</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt; font-weight:600;&quot;&gt;Bewertungsübersicht&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>Bewertungsübersicht</string>
     </property>
     <property name="textFormat">
      <enum>Qt::RichText</enum>
@@ -892,7 +876,7 @@
     <property name="title">
      <string>Statistik</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
