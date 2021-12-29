@@ -13,7 +13,11 @@ class TestatModel():
         self.variationsMatrix = [
             [7, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9],
             [2.71, 2.72, 2.73, 2.74, 2.75, 2.76, 2.77, 2.78, 2.79, 2.7],
-            [-5.2, -5.3, -5.4, -5.5, -5.6, -5.7, -5.8, -5.9, -5, -5.1]]       
+            [-5.2, -5.3, -5.4, -5.5, -5.6, -5.7, -5.8, -5.9, -5, -5.1]]   
+
+    def erzeugeOrdner(self, pfad):
+        if not os.path.isdir(pfad):
+            os.mkdir(pfad)  
 
     def ladeTucanListe(self, pfad):
         tucanliste = pd.read_excel(pfad, header = None)
@@ -46,6 +50,8 @@ class TestatModel():
         'Abzug 2',
         'Bemerkungen', 
         'Pfad']] = ''
+        teilnehmerliste['Punkte'] = 0
+        teilnehmerliste['Bemerkungen'] = 'Keine Abgabe. Nachtestat möglich.'
         teilnehmerliste[['Abgabe', 'Bestanden']] = 'Nein'
         self.bewertungsuebersicht = teilnehmerliste.set_index('Matrikelnummer',drop=False)
         self.bewertungsuebersicht.sort_values(by=['Nachname', 'Vorname'], inplace=True)
@@ -81,14 +87,17 @@ class TestatModel():
                             # Weise Abgabenstatus (=Ja) zu
                             self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Ja',f'{folderNameCopy}/{foldername}']
                             anzahlFalscheKriterien = self.idCheck(kp, werte)
+                            
                             if anzahlFalscheKriterien == 0:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [0, 'Keine']
-                            if anzahlFalscheKriterien == 1:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-0,'Ein Wert entspricht nicht der Matrikelnummer (kein Abzug).']
-                            if anzahlFalscheKriterien == 2:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-2,'Zwei Werte entsprechen nicht der Matrikelnummer.']
-                            if anzahlFalscheKriterien == 3:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1','Bemerkungen']] = [-4,'Drei Werte entsprechen nicht der Matrikelnummer.']
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [0, '', 'Keine']
+                            elif anzahlFalscheKriterien == 1:
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-0, '', 'Ein Wert entspricht nicht der Matrikelnummer (kein Abzug).']
+                            elif anzahlFalscheKriterien == 2:
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-2, '', 'Zwei Werte entsprechen nicht der Matrikelnummer.']
+                            elif anzahlFalscheKriterien == 3:
+                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-4, '', 'Drei Werte entsprechen nicht der Matrikelnummer.']
+                            else:
+                                print(f'ID Check Error! Anzahl der falschen Kriterien: {anzahlFalscheKriterien}.')
                         except:
                             # Weise Abgabenstatus (=Fehler) zu
                             self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Fehler',f'{folderNameCopy}/{foldername}']
@@ -123,10 +132,11 @@ class TestatModel():
     def updateBewertungsUebersichtZelle(self, geklickteMatrikelnummer, header, value):
         # Überschreibe den Zellenwert des zugehörigen Kriteriums
         self.bewertungsuebersicht.at[geklickteMatrikelnummer,header] = np.NaN if value == '' else value       
-        # Update ebenfalls die Gesamtpunktzahl
-        gesamtPunktzahl = self.gesamtPunktzahlStudent(geklickteMatrikelnummer)
-        self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Punkte'] = gesamtPunktzahl
-        self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Bestanden'] = 'Ja' if gesamtPunktzahl >= self.bestehensGrenze else 'Nein'
+        # Update ebenfalls die Gesamtpunktzahl und den Bestandenstatus, wenn Punkte verändert wurden
+        if header != 'Bemerkungen':
+            gesamtPunktzahl = self.gesamtPunktzahlStudent(geklickteMatrikelnummer)
+            self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Punkte'] = gesamtPunktzahl
+            self.bewertungsuebersicht.at[geklickteMatrikelnummer,'Bestanden'] = 'Ja' if gesamtPunktzahl >= self.bestehensGrenze else 'Nein'
 
     def updateBestandenStatusAllerStudenten(self):
         df = self.bewertungsuebersicht
@@ -147,8 +157,6 @@ class TestatModel():
         df = self.bewertungsuebersicht.loc[matrikelNummer]
         ws = self.wertungsSchluessel
         bg = self.bestehensGrenze
+        pfad = df['Pfad']
         pdf = PDFModel(df,ws,bg)
-        if df['Pfad'] != '':
-            pdf.output(f"{df['Pfad']}/{matrikelNummer}.pdf")
-        else:    
-            pdf.output(f"{matrikelNummer}.pdf")
+        pdf.output(f"{pfad}{'/' if pfad != '' else 'Studenten ohne Abgabe/'}{matrikelNummer}.pdf")

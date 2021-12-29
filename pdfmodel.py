@@ -95,22 +95,26 @@ class PDFModel(FPDF):
 
     def grading(self, punkteGesamt, bestehensGrenze):
         self.set_font(family=self.font, style='', size=self.textHeight)
-        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt='Summe', align='L', border='LTR')
+        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt='Ergebnis', align='L', border='LT')
         self.set_font(family=self.font, style='B', size=self.textHeight)
-        self.cell(w=15.5, h=self.cellHeight, txt=f'{punkteGesamt}', align='R', border='T')
+        self.set_line_width(width=0.2)
+        self.cell(w=15.5, h=self.cellHeight, txt=f'{punkteGesamt}', align='R', border='LT')
         self.set_font(family=self.font, style='', size=self.textHeight)
         self.cell(w=3.1, h=self.cellHeight, txt='/', align='C', border='T')
         self.cell(w=15.5, h=self.cellHeight, txt='30', align='L', border='TR', ln=1)
 
-        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt=f'Bestehensgrenze: {self.bestehensGrenze}', align='L', border='LBRT')
+        self.set_line_width(width=0.2)
+        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt=f'(Bestehensgrenze: {self.bestehensGrenze})', align='L', border='LB')
         self.set_font(family=self.font, style='B', size=self.textHeight-1)
+        self.set_line_width(width=0.2)
         if punkteGesamt >= bestehensGrenze:
             self.set_text_color(102,164,99)
-            self.cell(w=34.1, h=self.cellHeight, txt=f'BESTANDEN', align='C', border='LBRT', ln=1)
+            self.cell(w=34.1, h=self.cellHeight, txt=f'BESTANDEN', align='C', border='LBR', ln=1)
         else:
             self.set_text_color(191,70,39)
-            self.cell(w=34.1, h=self.cellHeight, txt=f'NICHT BESTANDEN', align='C', border='LBRT', ln=1)
+            self.cell(w=34.1, h=self.cellHeight, txt=f'NICHT BESTANDEN', align='C', border='LBR', ln=1)
         self.set_text_color(0,0,0)
+        self.set_line_width(width=0.2)
 
     def constructPDF(self, df):
         # Add a page

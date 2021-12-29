@@ -5,6 +5,8 @@ class TestatController():
         super(TestatController, self).__init__()
         self.view = view
         self.model = model
+
+        self.geklickteMatrikelnummer = 0
         
         self.initializeModel()
         self.initializeUI()
@@ -69,7 +71,6 @@ class TestatController():
                 if hasattr(self.model, 'tucanliste'):
                     self.model.erstelleBewertungsUebersichtAusListen()
                     self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
-                    self.uebergebeStatistik()
             else:
                 self.view.falscheListeFenster('Moodle')  
         except:
@@ -83,6 +84,7 @@ class TestatController():
             self.view.fuelleLabel(self.view.fehler_label, fehler)
             self.view.fuelleLabel(self.view.AnzahlAbgaben_label, anzahlAbgaben)
             self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
+            self.uebergebeStatistik()
 
     def speichereAenderungen(self):
         self.model.speichereBewertungsUebersichtAlsCSV()
@@ -100,15 +102,15 @@ class TestatController():
         self.geklickteMatrikelnummer = int(self.view.BewertungsUebersicht_table.item(row, 0).text())
         self.geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
 
-        # Logik zum Aktivieren/Deaktivieren des Zur-Abgabe-Buttons
-        # if self.geklickteZeile['Pfad'] != '':
-        self.view.aktiviereBewertungsdetails(True)
-            # Fülle alle Bewertungsdetails des ausgewählten Studenten
+        # Aktiviere Bewertungsdetails
+        self.view.aktiviereUIElement(self.view.bewertungsdetails_groupBox, True)
+        self.view.aktiviereUIElement(self.view.zurAbgabe_btn, self.geklickteZeile['Pfad'] != '')
+
+        # Fülle alle Bewertungsdetails des ausgewählten Studenten
         self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
-        # else:
-        # self.view.aktiviereBewertungsdetails(False)
 
     def uebergebeStatistik(self):
+        anzahlAlle = self.model.bewertungsuebersicht.shape[0]
         anzahlAbgaben = self.model.anzahlInSpalte('Abgabe')
         anzahlBestandenerAbgaben = self.model.anzahlInSpalte('Bestanden')
         anzahlBewertet = self.model.anzahlBewertet()
@@ -117,7 +119,7 @@ class TestatController():
         durchschnitt = round(gesamtPunktzahl/anzahlBewertet,2) if anzahlBewertet != 0 else 0
         self.view.fuelleLabel(self.view.AnzahlAbgaben_label, anzahlAbgaben)
         self.view.fuelleLabel(self.view.bestanden_label, f'{anzahlBestandenerAbgaben} ({anteilBestanden}%)')
-        self.view.fuelleLabel(self.view.unbewertet_label, anzahlAbgaben-anzahlBewertet)
+        self.view.fuelleLabel(self.view.unbewertet_label, anzahlAlle-anzahlBewertet)
         self.view.fuelleLabel(self.view.bewertet_label, anzahlBewertet)    
         self.view.fuelleLabel(self.view.durchschnitt_label, durchschnitt)
 
@@ -157,9 +159,10 @@ class TestatController():
             self.view.infoFenster(f'PDF erfolgreich exportiert.')
 
     def erzeugeBatchPDF(self):
+        self.model.erzeugeOrdner('Studenten ohne Abgabe')
         df = self.model.bewertungsuebersicht
         matrikelNummerAlt = self.geklickteMatrikelnummer
-        matrikelNummern = df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index
+        matrikelNummern = df[(df['Punkte'] != '')].index
         for matrikelNummer in matrikelNummern:
             self.geklickteMatrikelnummer = matrikelNummer
             self.erzeugePDF(False)

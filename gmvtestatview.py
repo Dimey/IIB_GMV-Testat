@@ -62,6 +62,8 @@ class TestatView(QtWidgets.QMainWindow):
         self.BewertungsUebersicht_table.setRowCount(bewertungsuebersicht.shape[0])
         bewertungsuebersichtArray = bewertungsuebersicht.to_numpy()
         for idx, value in np.ndenumerate(bewertungsuebersichtArray):
+            if isinstance(value, float):
+                value = f'{value:g}'
             item = QtWidgets.QTableWidgetItem(str(value))
             if idx[1]<6:
                 self.BewertungsUebersicht_table.setItem(idx[0],idx[1],item)
@@ -89,6 +91,9 @@ class TestatView(QtWidgets.QMainWindow):
             lineEdit.setText(newValue)
         else:
             lineEdit.setText(f'{newValue:g}')
+
+    def aktiviereUIElement(self, element, istAktiv):
+        element.setEnabled(istAktiv)
 
     def aktiviereBewertungsdetails(self, istAktiv):
         self.bewertungsdetails_groupBox.setEnabled(istAktiv)
