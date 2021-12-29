@@ -124,9 +124,6 @@ class TestatView(QtWidgets.QMainWindow):
         else:
             subprocess.call(["open", "-R", pfad])
 
-    def pdfStatusFenster(self, pdfStatus):
-        pass
-
     def infoFenster(self, text):
         box = QtWidgets.QMessageBox(self)
         box.setWindowTitle('Info')

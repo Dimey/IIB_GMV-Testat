@@ -40,7 +40,7 @@ class TestatController():
         self.view.abzug2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug2_lineEdit,"Abzug 2"))
         self.view.grenze_spinBox.valueChanged.connect(self.neueGrenzeErhalten)
         self.view.bemerkung_lineEdit.editingFinished.connect(partial(self.speichereBemerkung,self.view.bemerkung_lineEdit))
-        self.view.pdfExport_btn.clicked.connect(self.erzeugePDF)
+        self.view.pdfExport_btn.clicked.connect(partial(self.erzeugePDF, True))
         self.view.batchPDF_btn.clicked.connect(self.erzeugeBatchPDF)
 
     def oeffneTucanListe(self):
@@ -86,6 +86,7 @@ class TestatController():
 
     def speichereAenderungen(self):
         self.model.speichereBewertungsUebersichtAlsCSV()
+        self.view.infoFenster(f'Datenmodell erfolgreich gespeichert.')
 
     def ladeSicherungsDatei(self):
         path = self.view.fileDialog('csv')[0]
@@ -100,12 +101,12 @@ class TestatController():
         self.geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
 
         # Logik zum Aktivieren/Deaktivieren des Zur-Abgabe-Buttons
-        if self.geklickteZeile['Pfad'] != '':
-            self.view.aktiviereBewertungsdetails(True)
+        # if self.geklickteZeile['Pfad'] != '':
+        self.view.aktiviereBewertungsdetails(True)
             # Fülle alle Bewertungsdetails des ausgewählten Studenten
-            self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
-        else:
-            self.view.aktiviereBewertungsdetails(False)
+        self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
+        # else:
+        # self.view.aktiviereBewertungsdetails(False)
 
     def uebergebeStatistik(self):
         anzahlAbgaben = self.model.anzahlInSpalte('Abgabe')
@@ -150,17 +151,17 @@ class TestatController():
     def rufeOrdnerImFileExplorer(self):
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])
 
-    def erzeugePDF(self):
-        pdfStatus = self.model.exportPDF(self.geklickteMatrikelnummer)
-        self.view.pdfStatusFenster(pdfStatus)
+    def erzeugePDF(self, withInfo):
+        self.model.exportPDF(self.geklickteMatrikelnummer)
+        if withInfo:
+            self.view.infoFenster(f'PDF erfolgreich exportiert.')
 
     def erzeugeBatchPDF(self):
         df = self.model.bewertungsuebersicht
         matrikelNummerAlt = self.geklickteMatrikelnummer
         matrikelNummern = df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index
-
         for matrikelNummer in matrikelNummern:
             self.geklickteMatrikelnummer = matrikelNummer
-            self.erzeugePDF()
-
+            self.erzeugePDF(False)
+        self.view.infoFenster(f'Es wurden {len(matrikelNummern)} PDFs erfolgreich exportiert.')
         self.geklickteMatrikelnummer = matrikelNummerAlt

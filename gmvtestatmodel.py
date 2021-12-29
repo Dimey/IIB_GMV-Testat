@@ -93,14 +93,7 @@ class TestatModel():
                             # Weise Abgabenstatus (=Fehler) zu
                             self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Fehler',f'{folderNameCopy}/{foldername}']
                             fehlerZaehler += 1
-                        
-                        # print(kp)
-                        # status = self.idCheck(kp)
-                        # print(f"Konstruktionsprotokoll von {foldername.split('_')[0]} geladen.")
-                        # Verkettete xml erstellen
-                        # kp.to_xml(f"konstruktionsprotokolle.xml",index=False,root_name=f"id{filename[0:-5]}")
-                        # Werte KP aus
-                        # self.bepunkteKP(kp)
+
         return abgabenZaehler, fehlerZaehler
 
     def extrahiereWerteVonZiffern(self, matrikelnummer):
@@ -145,7 +138,7 @@ class TestatModel():
         return df[(df['Abgabe'] == 'Ja') & (df['Punkte'] != '')].index 
 
     def gesamtPunktzahlStudent(self, matrikelnummer):
-        return np.clip((pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Abzug 2'])*self.wertungsSchluessel).sum(), a_min=0, a_max=None)
+        return np.clip((pd.to_numeric(self.bewertungsuebersicht.loc[matrikelnummer,'Kriterium 1':'Abzug 2'])*self.wertungsSchluessel).sum(), a_min=0, a_max=30)
 
     def gesamtPunktzahl(self):
         return pd.to_numeric(self.bewertungsuebersicht.Punkte).sum()
@@ -156,4 +149,3 @@ class TestatModel():
         bg = self.bestehensGrenze
         pdf = PDFModel(df,ws,bg)
         pdf.output(f"{df['Pfad']}/{matrikelNummer}.pdf")
-        return 0
