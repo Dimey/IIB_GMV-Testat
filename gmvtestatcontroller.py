@@ -105,6 +105,7 @@ class TestatController():
         # Aktiviere Bewertungsdetails
         self.view.aktiviereUIElement(self.view.bewertungsdetails_groupBox, True)
         self.view.aktiviereUIElement(self.view.zurAbgabe_btn, self.geklickteZeile['Pfad'] != '')
+        self.view.aktiviereUIElement(self.view.pdfExport_btn, self.geklickteZeile['Punkte'] != '')
 
         # Fülle alle Bewertungsdetails des ausgewählten Studenten
         self.view.fuelleBewertungsDetails(self.geklickteZeile.fillna(''))
@@ -128,12 +129,14 @@ class TestatController():
         df = self.model.bewertungsuebersicht.reset_index(drop=True)
         row = df[df['Matrikelnummer'] == self.geklickteMatrikelnummer].index[0] 
         columnPunkte = df.columns.get_loc("Punkte")
-        neueGesamtPunkte = self.model.bewertungsuebersicht.at[self.geklickteMatrikelnummer,'Punkte']
-        self.view.setzeBewertungsUebersichtZelle(row, columnPunkte, neueGesamtPunkte)
+        neueGesamtPunkte = float(self.model.bewertungsuebersicht.at[self.geklickteMatrikelnummer,'Punkte'])
+        self.view.setzeBewertungsUebersichtZelle(row, columnPunkte, f'{neueGesamtPunkte:g}')
         columnBestanden = df.columns.get_loc("Bestanden")
         neuerBestandenStatus = self.model.bewertungsuebersicht.at[self.geklickteMatrikelnummer,'Bestanden']
         self.view.setzeBewertungsUebersichtZelle(row, columnBestanden, neuerBestandenStatus)
-        self.view.setzePunktestandLabel(self.model.gesamtPunktzahlStudent(self.geklickteMatrikelnummer))    
+        self.view.setzePunktestandLabel(f'{neueGesamtPunkte:g}')  
+        self.geklickteZeile = self.model.bewertungsuebersicht.loc[self.geklickteMatrikelnummer]
+        self.view.aktiviereUIElement(self.view.pdfExport_btn, self.geklickteZeile['Punkte'] != '')  
 
         self.uebergebeStatistik()    
 

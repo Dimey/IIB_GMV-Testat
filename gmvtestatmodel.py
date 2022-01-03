@@ -1,8 +1,7 @@
+import os
 import pandas as pd
 import numpy as np
 from shutil import copytree
-import os
-from fpdf import FPDF
 from pdfmodel import PDFModel
 
 class TestatModel():

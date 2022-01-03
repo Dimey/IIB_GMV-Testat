@@ -178,7 +178,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Gesamtpunktzahl: 0 / 30.0 P</string>
+      <string>Gesamtpunktzahl: 0 / 30 P</string>
      </property>
      <property name="textFormat">
       <enum>Qt::MarkdownText</enum>

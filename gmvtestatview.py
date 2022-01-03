@@ -1,11 +1,10 @@
 import os
-from PyQt5 import QtGui, QtCore, QtWidgets, uic
 import sys
-import os
-import subprocess       
+import subprocess  
+import numpy as np 
+from PyQt5 import QtGui, QtCore, QtWidgets, uic    
 from gmvtestatcontroller import TestatController
 from gmvtestatmodel import TestatModel
-import numpy as np
 
 class TestatView(QtWidgets.QMainWindow):
     def __init__(self):
@@ -95,9 +94,6 @@ class TestatView(QtWidgets.QMainWindow):
     def aktiviereUIElement(self, element, istAktiv):
         element.setEnabled(istAktiv)
 
-    def aktiviereBewertungsdetails(self, istAktiv):
-        self.bewertungsdetails_groupBox.setEnabled(istAktiv)
-
     def aktiviereUIElementeNachUebersichtBefuellung(self):
         self.grenze_label.setEnabled(True)
         self.grenze_spinBox.setEnabled(True)
@@ -121,7 +117,9 @@ class TestatView(QtWidgets.QMainWindow):
         self.setzePunktestandLabel(geklickteZeile['Punkte'])
 
     def setzePunktestandLabel(self, punkte):
-        text = f'Gesamtpunktzahl: {punkte} / 30.0 P'
+        if punkte != '':
+            punkte = f'{float(punkte):g}'
+        text = f'Gesamtpunktzahl: {punkte} / 30 P'
         self.gesamtpunktzahl_label.setText(text)
 
     def zeigeOrdnerImFinder(self, pfad):

@@ -98,13 +98,13 @@ class PDFModel(FPDF):
         self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt='Ergebnis', align='L', border='LT')
         self.set_font(family=self.font, style='B', size=self.textHeight)
         self.set_line_width(width=0.2)
-        self.cell(w=15.5, h=self.cellHeight, txt=f'{punkteGesamt}', align='R', border='LT')
+        self.cell(w=15.5, h=self.cellHeight, txt=f'{punkteGesamt:g}', align='R', border='LT')
         self.set_font(family=self.font, style='', size=self.textHeight)
         self.cell(w=3.1, h=self.cellHeight, txt='/', align='C', border='T')
         self.cell(w=15.5, h=self.cellHeight, txt='30', align='L', border='TR', ln=1)
 
         self.set_line_width(width=0.2)
-        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt=f'(Bestehensgrenze: {self.bestehensGrenze})', align='L', border='LB')
+        self.cell(w=self.cellWidthLeft, h=self.cellHeight, txt=f'(Bestehensgrenze: {self.bestehensGrenze} Punkte)', align='L', border='LB')
         self.set_font(family=self.font, style='B', size=self.textHeight-1)
         self.set_line_width(width=0.2)
         if punkteGesamt >= bestehensGrenze:
