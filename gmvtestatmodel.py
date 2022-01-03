@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import numpy as np
+from PyQt5.QtCore import QThread, pyqtSignal
 from shutil import copytree
 from pdfmodel import PDFModel
 
@@ -61,48 +62,48 @@ class TestatModel():
     def ladeBewertungsUebersichtAusCSV(self, pfad):
         self.bewertungsuebersicht = pd.read_csv(pfad).set_index('Matrikelnummer',drop=False).fillna('')
 
-    def ladeBatch(self, path):
-        konstruktionsprotokolleListe = []
-        abgabenZaehler = 0
-        fehlerZaehler = 0
+    def pfadeAllerAbgaben(self, pfad):
         # Ordnername für die Kopie aller Abgaben
-        folderNameCopy = f"Testatabgaben_Kopie"
-        if not os.path.isdir(folderNameCopy): # Wenn noch keine Abgaben-Kopie vorhanden
+        copyFolderName = f"Testatabgaben_Kopie"
+        if not os.path.isdir(copyFolderName): # Wenn noch keine Abgaben-Kopie vorhanden
             print("Kopie wurde angelegt.") # TODO: Infofenster nachrüsten
-            copytree(f"{path}", folderNameCopy)
+            copytree(f"{pfad}", copyFolderName)
         else:
             print("Es besteht bereits eine Abgaben-Kopie.")
-        for foldername in os.listdir(path): # Iteriere über alle Studenten-Ordner
-            if not foldername.startswith('.'): # Ignoriere versteckte Dateien
-                for filename in os.listdir(f"{path}/{foldername}"):
-                    if filename.endswith('html'):
-                        abgabenZaehler += 1
-                        # Matrikelnummervariation checken
-                        matrikelnummer = filename[0:-5]
-                        werte = self.extrahiereWerteVonZiffern(matrikelnummer)
+        htmlDateien = []
+        for dirpath, subdirs, files in os.walk(copyFolderName):
+            for x in files:
+                if x.endswith(".html"):
+                    htmlDateien.append(os.path.join(dirpath, x))
+        return htmlDateien
+        
+    def ladeAbgabe(self, path):
+        matrikelnummer = path[-12:-5]
+        ordnerPfad = path[0:-13]
+        werte = self.extrahiereWerteVonZiffern(matrikelnummer)
 
-                        try:
-                            kp = pd.read_html(f"{path}/{foldername}/{filename}")[0]
-                            # Weise Abgabenstatus (=Ja) zu
-                            self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Ja',f'{folderNameCopy}/{foldername}']
-                            anzahlFalscheKriterien = self.idCheck(kp, werte)
-                            
-                            if anzahlFalscheKriterien == 0:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [0, '', 'Keine']
-                            elif anzahlFalscheKriterien == 1:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-0, '', 'Ein Wert entspricht nicht der Matrikelnummer (kein Abzug).']
-                            elif anzahlFalscheKriterien == 2:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-2, '', 'Zwei Werte entsprechen nicht der Matrikelnummer.']
-                            elif anzahlFalscheKriterien == 3:
-                                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-4, '', 'Drei Werte entsprechen nicht der Matrikelnummer.']
-                            else:
-                                print(f'ID Check Error! Anzahl der falschen Kriterien: {anzahlFalscheKriterien}.')
-                        except:
-                            # Weise Abgabenstatus (=Fehler) zu
-                            self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Fehler',f'{folderNameCopy}/{foldername}']
-                            fehlerZaehler += 1
-
-        return abgabenZaehler, fehlerZaehler
+        try:
+            kp = pd.read_html(path)[0]
+            # Weise Abgabenstatus (=Ja) zu
+            self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Ja',ordnerPfad]
+            anzahlFalscheKriterien = self.idCheck(kp, werte)
+            
+            if anzahlFalscheKriterien == 0:
+                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [0, '', 'Keine']
+            elif anzahlFalscheKriterien == 1:
+                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-0, '', 'Ein Wert entspricht nicht der Matrikelnummer (kein Abzug).']
+            elif anzahlFalscheKriterien == 2:
+                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-2, '', 'Zwei Werte entsprechen nicht der Matrikelnummer.']
+            elif anzahlFalscheKriterien == 3:
+                self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abzug 1', 'Punkte', 'Bemerkungen']] = [-4, '', 'Drei Werte entsprechen nicht der Matrikelnummer.']
+            else:
+                print(f'ID Check Error! Anzahl der falschen Kriterien: {anzahlFalscheKriterien}.')
+            
+            return True
+        except:
+            # Weise Abgabenstatus (=Fehler) zu
+            self.bewertungsuebersicht.loc[(self.bewertungsuebersicht.Matrikelnummer == int(matrikelnummer)), ['Abgabe','Pfad']] = ['Fehler',ordnerPfad]
+            return False
 
     def extrahiereWerteVonZiffern(self, matrikelnummer):
         E, F, G = str(matrikelnummer)[4], str(matrikelnummer)[5], str(matrikelnummer)[6]

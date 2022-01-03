@@ -1,4 +1,5 @@
 from functools import partial
+from threads import BatchImportThread, PDFGenerationThread
 
 class TestatController():
     def __init__(self, model, view):
@@ -8,14 +9,10 @@ class TestatController():
 
         self.geklickteMatrikelnummer = 0
         
-        self.initializeModel()
         self.initializeUI()
         
         # Connect signals and slots
         self.connectSignals()
-        
-    def initializeModel(self):  
-        pass
         
     def initializeUI(self):
         # Setze Focus auf den Laden Button
@@ -24,7 +21,7 @@ class TestatController():
     def connectSignals(self):
         self.view.TucanListeLaden_btn.clicked.connect(self.oeffneTucanListe)
         self.view.MoodleListeLaden_btn.clicked.connect(self.oeffneMoodleListe)
-        self.view.BatchImportKpLaden_btn.clicked.connect(self.oeffneKPOrdner)
+        self.view.BatchImportKpLaden_btn.clicked.connect(self.importiereAlleAbgaben)
         self.view.Speichern_btn.clicked.connect(self.speichereAenderungen)
         self.view.Laden_btn.clicked.connect(self.ladeSicherungsDatei)
         self.view.zurAbgabe_btn.clicked.connect(self.rufeOrdnerImFileExplorer)
@@ -41,7 +38,7 @@ class TestatController():
         self.view.abzug1_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug1_lineEdit,"Abzug 1"))
         self.view.abzug2_lineEdit.editingFinished.connect(partial(self.speichereKrit,self.view.abzug2_lineEdit,"Abzug 2"))
         self.view.grenze_spinBox.valueChanged.connect(self.neueGrenzeErhalten)
-        self.view.pdfExport_btn.clicked.connect(partial(self.erzeugePDF, True))
+        self.view.pdfExport_btn.clicked.connect(self.erzeugePDF)
         self.view.batchPDF_btn.clicked.connect(self.erzeugeBatchPDF)
         self.view.bemerkung_plainTextEdit.textChanged.connect(partial(self.speichereBemerkungTextEdit, self.view.bemerkung_plainTextEdit))
 
@@ -76,15 +73,23 @@ class TestatController():
         except:
             print('Die MoodleListe konnte nicht geladen werden.')
 
-    def oeffneKPOrdner(self):
+    def importiereAlleAbgaben(self):
         path = self.view.folderDialog()
         if path:
-            self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
-            anzahlAbgaben, fehler = self.model.ladeBatch(path)
-            self.view.fuelleLabel(self.view.fehler_label, fehler)
-            self.view.fuelleLabel(self.view.AnzahlAbgaben_label, anzahlAbgaben)
-            self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
-            self.uebergebeStatistik()
+            allePfadeZuAbgaben = self.model.pfadeAllerAbgaben(path)
+            self.view.zeigeLadeView("Batch Import")
+            self.importThread = BatchImportThread(self.model, allePfadeZuAbgaben)
+            self.importThread._progressSignal.connect(self.view.ladeView.updateProgressInfo)
+            self.importThread._setModelSignal.connect(self.setModelAndViewAfterImport)
+            self.importThread.start()
+            self.view.fuelleLabel(self.view.AnzahlAbgaben_label, len(allePfadeZuAbgaben))
+
+    def setModelAndViewAfterImport(self, model, fehlerAnzahl):  
+        self.model = model
+        self.view.fuelleBewertungsUebersicht(self.model.bewertungsuebersicht)
+        self.view.zeigeLadenHaken(self.view.BatchImportKpLaden_btn)
+        self.view.fuelleLabel(self.view.fehler_label, fehlerAnzahl)
+        self.uebergebeStatistik()
 
     def speichereAenderungen(self):
         self.model.speichereBewertungsUebersichtAlsCSV()
@@ -156,18 +161,13 @@ class TestatController():
     def rufeOrdnerImFileExplorer(self):
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])
 
-    def erzeugePDF(self, withInfo):
+    def erzeugePDF(self):
+        self.model.erzeugeOrdner('Studenten ohne Abgabe')
         self.model.exportPDF(self.geklickteMatrikelnummer)
-        if withInfo:
-            self.view.infoFenster(f'PDF erfolgreich exportiert.')
+        self.view.infoFenster(f'PDF erfolgreich exportiert.')
 
     def erzeugeBatchPDF(self):
-        self.model.erzeugeOrdner('Studenten ohne Abgabe')
-        df = self.model.bewertungsuebersicht
-        matrikelNummerAlt = self.geklickteMatrikelnummer
-        matrikelNummern = df[(df['Punkte'] != '')].index
-        for matrikelNummer in matrikelNummern:
-            self.geklickteMatrikelnummer = matrikelNummer
-            self.erzeugePDF(False)
-        self.view.infoFenster(f'Es wurden {len(matrikelNummern)} PDFs erfolgreich exportiert.')
-        self.geklickteMatrikelnummer = matrikelNummerAlt
+        self.view.zeigeLadeView("PDF Batch Export")
+        self.pdfThread = PDFGenerationThread(self.model)
+        self.pdfThread._signal.connect(self.view.ladeView.updateProgressInfo)
+        self.pdfThread.start()

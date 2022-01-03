@@ -5,6 +5,7 @@ import numpy as np
 from PyQt5 import QtGui, QtCore, QtWidgets, uic    
 from gmvtestatcontroller import TestatController
 from gmvtestatmodel import TestatModel
+from gmvladeview import LadeView
 
 class TestatView(QtWidgets.QMainWindow):
     def __init__(self):
@@ -72,12 +73,12 @@ class TestatView(QtWidgets.QMainWindow):
         self.BewertungsUebersicht_table.setItem(row, column, item)
 
     def falscheListeFenster(self, listtyp):
-        box = QtWidgets.QMessageBox(self)
-        box.setWindowTitle('Fehler: Falscher Dateiname.')
-        box.setText(f'Bitte wähle die {listtyp}-Liste aus!\n\n'
-                    f'Hinweis:\nDer Dateiname (inkl. Pfad) muss \'{listtyp}\' enthalten.\n'
-                    f'Die Groß-/Kleinschreibung ist dabei unerheblich.')
-        box.exec()
+        text = f'''Bitte wähle die {listtyp}-Liste aus!
+
+        Hinweis:
+        Der Dateiname muss \'{listtyp}\' enthalten.
+        Die Groß-/Kleinschreibung ist dabei unerheblich.'''
+        self.infoFenster(text)
 
     def zeigeLadenHaken(self, button):
         button.setText(u'Laden \u2714')
@@ -134,6 +135,9 @@ class TestatView(QtWidgets.QMainWindow):
         box.setWindowTitle('Info')
         box.setText(text)
         box.exec()
+
+    def zeigeLadeView(self, title):
+        self.ladeView = LadeView(title)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
