@@ -287,7 +287,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Stamm ausgespart</string>
+            <string>Vielecke dazwischen</string>
            </property>
           </widget>
          </item>
@@ -299,7 +299,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Vielecke zw.  Eckpunkten</string>
+            <string>Verschneidungsfrei</string>
            </property>
           </widget>
          </item>
@@ -311,7 +311,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Verschneidungsfrei</string>
+            <string>Korrekte Skulptur</string>
            </property>
           </widget>
          </item>
@@ -391,7 +391,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 4 </string>
+            <string>/ 4.5</string>
            </property>
           </widget>
          </item>
@@ -403,7 +403,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 1</string>
+            <string>/ 2</string>
            </property>
           </widget>
          </item>
@@ -415,7 +415,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 4</string>
+            <string>/ 1</string>
            </property>
           </widget>
          </item>
@@ -427,7 +427,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 1</string>
+            <string>/ 0.5</string>
            </property>
           </widget>
          </item>
@@ -476,7 +476,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Alle Eckpunkte</string>
+            <string>Eck- und Innenpunkte</string>
            </property>
           </widget>
          </item>
@@ -488,7 +488,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Strecken ohne Wipfel     </string>
+            <string>Verbindungen außen</string>
            </property>
           </widget>
          </item>
@@ -500,7 +500,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Strecken Wipfel</string>
+            <string>Verbindungen innen</string>
            </property>
           </widget>
          </item>
@@ -562,7 +562,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 9</string>
+            <string>/ 4.5</string>
            </property>
           </widget>
          </item>
@@ -574,7 +574,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 12</string>
+            <string>/ 1.6</string>
            </property>
           </widget>
          </item>
@@ -586,7 +586,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 4</string>
+            <string>/ 5.4</string>
            </property>
           </widget>
          </item>
@@ -647,7 +647,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Strecken</string>
+            <string>Verbindungslinien</string>
            </property>
           </widget>
          </item>
@@ -697,7 +697,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 5 </string>
+            <string>/ 4</string>
            </property>
           </widget>
          </item>
@@ -709,7 +709,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 8</string>
+            <string>/ 6.5</string>
            </property>
           </widget>
          </item>
@@ -735,12 +735,12 @@
      <property name="title">
       <string>Abzüge</string>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>234</width>
+        <width>221</width>
         <height>55</height>
        </rect>
       </property>
@@ -823,7 +823,7 @@
             </font>
            </property>
            <property name="text">
-            <string>     </string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -835,7 +835,7 @@
             </font>
            </property>
            <property name="text">
-            <string>     </string>
+            <string/>
            </property>
           </widget>
          </item>
@@ -880,7 +880,7 @@
        <pointsize>8</pointsize>
       </font>
      </property>
-     <property name="placeholderText">
+     <property name="placeholderText" stdset="0">
       <string>Bemerkungen...</string>
      </property>
     </widget>
@@ -902,7 +902,7 @@
     <property name="title">
      <string>Import</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>11</x>
@@ -1143,14 +1143,14 @@
         <item>
          <widget class="QLabel" name="label_40">
           <property name="text">
-           <string>             </string>
+           <string/>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_41">
           <property name="text">
-           <string>             </string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -1169,7 +1169,7 @@
         <item>
          <widget class="QLabel" name="label_42">
           <property name="text">
-           <string>             </string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -1180,14 +1180,14 @@
         <item>
          <widget class="QLabel" name="label_43">
           <property name="text">
-           <string>             </string>
+           <string/>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLabel" name="label_44">
           <property name="text">
-           <string>             </string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -1206,7 +1206,7 @@
         <item>
          <widget class="QLabel" name="label_45">
           <property name="text">
-           <string>             </string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -1408,7 +1408,7 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>560</x>

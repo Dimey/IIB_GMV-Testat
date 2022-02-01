@@ -11,7 +11,7 @@ class TestatView(QtWidgets.QMainWindow):
     def __init__(self):
         super(TestatView, self).__init__()
         if os.name == 'nt':
-            uic.loadUi('gmvtestat_win.ui', self)
+            uic.loadUi('gmvtestat2_win.ui', self)
         else:
             uic.loadUi('gmvtestat2.ui', self)
         self.konfigUI()
