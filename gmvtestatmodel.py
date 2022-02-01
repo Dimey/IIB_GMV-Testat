@@ -4,16 +4,14 @@ import numpy as np
 from PyQt5.QtCore import QThread, pyqtSignal
 from shutil import copytree
 from pdfmodel import PDFModel
+from pdfmodel2 import PDFModel2
 
 class TestatModel():
     def __init__(self):
         super(TestatModel, self).__init__() 
         self.bestehensGrenze = 15
-        self.wertungsSchluessel = [1.5, 1, 1, 1, 0.5, 0.25, 0.625, 1, 0.375, 1, 1]
-        self.variationsMatrix = [
-            [7, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9],
-            [2.71, 2.72, 2.73, 2.74, 2.75, 2.76, 2.77, 2.78, 2.79, 2.7],
-            [-5.2, -5.3, -5.4, -5.5, -5.6, -5.7, -5.8, -5.9, -5, -5.1]]   
+        self.wertungsSchluessel = PDFModel2.wertungsSchluessel
+        self.variationsMatrix = PDFModel2.variationsMatrix
 
     def erzeugeOrdner(self, pfad):
         if not os.path.isdir(pfad):
@@ -158,5 +156,5 @@ class TestatModel():
         ws = self.wertungsSchluessel
         bg = self.bestehensGrenze
         pfad = df['Pfad']
-        pdf = PDFModel(df,ws,bg)
+        pdf = PDFModel2(df,ws,bg)
         pdf.output(f"{pfad}{'/' if pfad != '' else 'Studenten ohne Abgabe/'}{matrikelNummer}.pdf")

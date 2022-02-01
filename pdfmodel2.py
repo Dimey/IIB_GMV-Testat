@@ -2,13 +2,13 @@ import datetime
 import pandas as pd
 from fpdf import FPDF
 
-class PDFModel(FPDF):
+class PDFModel2(FPDF):
     # Testat-specific data
-    wertungsSchluessel = [1.5, 1, 1, 1, 0.5, 0.25, 0.625, 1, 0.375, 1, 1]
+    wertungsSchluessel = [1.5, 1, 1, 0.5, 0.5625, 0.4, 0.6, 0.5, 0.5, 1, 1]
     variationsMatrix = [
-        [7, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9],
-        [2.71, 2.72, 2.73, 2.74, 2.75, 2.76, 2.77, 2.78, 2.79, 2.7],
-        [-5.2, -5.3, -5.4, -5.5, -5.6, -5.7, -5.8, -5.9, -5, -5.1]]
+        [-2, -2.1, -2.2, -2.3, -2.4, -2.5, -2.6, -2.7, -2.8, -2.9],
+        [6.9, 6.8, 6.7, 6.5, 6.4, 6.4, 6.3, 6.2, 6.1, 6.0],
+        [5.0, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9]]
         
     def __init__(self, df, ws, bg):
         super().__init__('P','mm')
@@ -128,7 +128,7 @@ class PDFModel(FPDF):
         self.add_page()
 
         # Title
-        self.taskTitle('Bewertung des Testats vom 13.12.21')
+        self.taskTitle('Bewertung des Nachtestats vom 31.01.22')
 
         # Id + name
         self.twoPartCell_param('Matrikelnummer', f"{self.data['Matrikelnummer']}")
@@ -137,23 +137,23 @@ class PDFModel(FPDF):
 
         # Task 1
         self.taskTitle('Aufgabe 1: Schattenwurf')
-        self.twoPartCell_subTask('Schatteneckpunkte', df['Kriterium 1'], 6)
-        self.twoPartCell_subTask('Stamm ausgespart', df['Kriterium 2'], 1)
-        self.twoPartCell_subTask('Vielecke zwischen Schatteneckpunkten', df['Kriterium 3'], 4)
-        self.twoPartCell_subTask('Vielecke verschneidungsfrei', df['Kriterium 4'], 1)
+        self.twoPartCell_subTask('Schatteneckpunkte', df['Kriterium 1'], 4.5)
+        self.twoPartCell_subTask('Vielecke zwischen Schatteneckpunkten', df['Kriterium 2'], 2)
+        self.twoPartCell_subTask('Vielecke verschneidungsfrei', df['Kriterium 3'], 1)
+        self.twoPartCell_subTask('Korrekte Skulptur gewählt', df['Kriterium 4'], 0.5)
         self.emptyLine()
 
         # Task 2
         self.taskTitle('Aufgabe 2: Dreitafelprojektion')
-        self.twoPartCell_subTask('Eckpunkte Weihnachtsbaum + Stamm', df['Kriterium 5'], 4.5)
-        self.twoPartCell_subTask('Verbindungslinien Stamm + Krone', df['Kriterium 6'], 3)
-        self.twoPartCell_subTask('Verbindungslinien zum Wipfel', df['Kriterium 7'], 2.5)
+        self.twoPartCell_subTask('Eck- und Innenpunkte der Skulptur', df['Kriterium 5'], 4.5)
+        self.twoPartCell_subTask('Verbindungslinien außen', df['Kriterium 6'], 1.6)
+        self.twoPartCell_subTask('Verbindungslinien innen', df['Kriterium 7'], 5.4)
         self.emptyLine()
 
         # Task 3
         self.taskTitle('Aufgabe 3: Abbildung 3D auf 2D')
-        self.twoPartCell_subTask('Eckpunkte Weihnachtsbaum + Stamm', df['Kriterium 8'], 5)
-        self.twoPartCell_subTask('Verbindungslinien Stamm + Krone', df['Kriterium 9'], 3)
+        self.twoPartCell_subTask('Eckpunkte', df['Kriterium 8'], 4)
+        self.twoPartCell_subTask('Verbindungslinien', df['Kriterium 9'], 6.5)
         self.emptyLine()
 
         # Penalty
