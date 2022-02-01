@@ -8,7 +8,7 @@ class LadeView(QWidget):
         self.progressBar = QProgressBar(self)
         self.progressLabel = QLabel(self)
         self.progressBar.setValue(0)
-        self.progressLabel.setText('Test-String')
+        self.progressLabel.setText('')
         self.resize(300,100)
         self.vBox = QVBoxLayout()
         self.vBox.addWidget(self.progressBar)
