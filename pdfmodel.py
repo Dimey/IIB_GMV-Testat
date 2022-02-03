@@ -1,4 +1,5 @@
 import datetime
+import numpy as np
 import pandas as pd
 from fpdf import FPDF
 
@@ -9,6 +10,17 @@ class PDFModel(FPDF):
         [7, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9],
         [2.71, 2.72, 2.73, 2.74, 2.75, 2.76, 2.77, 2.78, 2.79, 2.7],
         [-5.2, -5.3, -5.4, -5.5, -5.6, -5.7, -5.8, -5.9, -5, -5.1]]
+
+    # Testat-specific id-check
+    @classmethod
+    def idCheck(cls, kp, werte):
+        # Gibt Anzahl falscher Kriterien zurück
+        werteStudent = kp['Wert'].unique()
+        schieberegler, zKoordinate, ebenenHoehe = werte[0], werte[1], werte[2]
+        G = np.frompyfunc(lambda x: f'z = {ebenenHoehe}' in x, 1, 1)(werteStudent)
+        F = np.frompyfunc(lambda x: f'Augpunkt = (2.75, -2.49, {zKoordinate})' in x, 1, 1)(werteStudent)
+        E = np.frompyfunc(lambda x: f'SchiebereglerE = {schieberegler}' in x, 1, 1)(werteStudent)
+        return 3 - np.count_nonzero((E) | (F) | (G))
         
     def __init__(self, df, ws, bg):
         super().__init__('P','mm')

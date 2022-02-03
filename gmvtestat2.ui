@@ -217,7 +217,7 @@
        <rect>
         <x>10</x>
         <y>30</y>
-        <width>227</width>
+        <width>221</width>
         <height>121</height>
        </rect>
       </property>
@@ -227,14 +227,14 @@
          <item>
           <widget class="QLabel" name="label_15">
            <property name="text">
-            <string>Schatteneckpunkte</string>
+            <string>Schatteneckpunkte </string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_16">
            <property name="text">
-            <string>Vielecke dazwischen  </string>
+            <string>Vielecke dazwischen      </string>
            </property>
           </widget>
          </item>
@@ -291,28 +291,28 @@
          <item>
           <widget class="QLabel" name="label_18">
            <property name="text">
-            <string>/ 4.5 </string>
+            <string>/ 3 </string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_19">
            <property name="text">
-            <string>/ 2</string>
+            <string>/ 2 </string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_20">
            <property name="text">
-            <string>/ 1</string>
+            <string>/ 1 </string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_21">
            <property name="text">
-            <string>/ 0.5</string>
+            <string>/ 1 </string>
            </property>
           </widget>
          </item>
@@ -348,7 +348,7 @@
          <item>
           <widget class="QLabel" name="label_22">
            <property name="text">
-            <string>Eck- und Innenpunkte</string>
+            <string>Eck- und Innenpunkte     </string>
            </property>
           </widget>
          </item>
@@ -398,21 +398,21 @@
          <item>
           <widget class="QLabel" name="label_25">
            <property name="text">
-            <string>/ 4.5</string>
+            <string>/ 8 </string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_26">
            <property name="text">
-            <string>/ 1.6</string>
+            <string>/ 4 </string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_27">
            <property name="text">
-            <string>/ 5.4</string>
+            <string>/ 9</string>
            </property>
           </widget>
          </item>
@@ -455,7 +455,7 @@
          <item>
           <widget class="QLabel" name="label_30">
            <property name="text">
-            <string>Verbindungslinien</string>
+            <string>Verbindungslinien           </string>
            </property>
           </widget>
          </item>
@@ -484,14 +484,14 @@
          <item>
           <widget class="QLabel" name="label_33">
            <property name="text">
-            <string>/ 4 </string>
+            <string>/ 8</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_34">
            <property name="text">
-            <string>/ 6.5</string>
+            <string>/ 13</string>
            </property>
           </widget>
          </item>

@@ -108,12 +108,7 @@ class TestatModel():
         return [self.variationsMatrix[0][int(E)], self.variationsMatrix[1][int(F)], self.variationsMatrix[2][int(G)]] 
 
     def idCheck(self, kp, werte):
-        # Gibt Anzahl falscher Kriterien zurück
-        werteStudent = kp['Wert'].unique()
-        schieberegler, zKoordinate, ebenenHoehe = werte[0], werte[1], werte[2]
-        return 3 - np.count_nonzero((np.where((werteStudent == f'SchiebereglerE = {schieberegler}') |
-        (werteStudent == f'Augpunkt = (2.75, -2.49, {zKoordinate})'), True, False)) |
-        (pd.Series(werteStudent).str.slice(start=4).str.match(f'z = {ebenenHoehe}')))
+        return PDFModel2.idCheck(kp, werte)
 
     def anzahlFehler(self):
         df = self.bewertungsuebersicht
