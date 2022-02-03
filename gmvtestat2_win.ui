@@ -391,7 +391,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 4.5</string>
+            <string>/ 3</string>
            </property>
           </widget>
          </item>
@@ -427,7 +427,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 0.5</string>
+            <string>/ 1</string>
            </property>
           </widget>
          </item>
@@ -562,7 +562,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 4.5</string>
+            <string>/ 8</string>
            </property>
           </widget>
          </item>
@@ -574,7 +574,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 1.6</string>
+            <string>/ 4</string>
            </property>
           </widget>
          </item>
@@ -586,7 +586,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 5.4</string>
+            <string>/ 9</string>
            </property>
           </widget>
          </item>
@@ -697,7 +697,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 4</string>
+            <string>/ 8</string>
            </property>
           </widget>
          </item>
@@ -709,7 +709,7 @@
             </font>
            </property>
            <property name="text">
-            <string>/ 6.5</string>
+            <string>/ 13</string>
            </property>
           </widget>
          </item>
