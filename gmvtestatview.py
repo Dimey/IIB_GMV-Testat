@@ -10,10 +10,12 @@ from gmvladeview import LadeView
 class TestatView(QtWidgets.QMainWindow):
     def __init__(self):
         super(TestatView, self).__init__()
+        ui_dir = TestatModel.resourcePath("ui")
         if os.name == 'nt':
-            uic.loadUi('gmvtestat2_win.ui', self)
+            uic.loadUi(ui_dir + '/gmvtestat2_win.ui',self)
         else:
-            uic.loadUi('gmvtestat2.ui', self)
+            uic.loadUi(ui_dir + '/gmvtestat2.ui',self)
+            # uic.loadUi('/Users/dimitrihaas/Library/Mobile Documents/com~apple~CloudDocs/TU Darmstadt/MSc Computional Engineering/Semester 3/Hiwi 2021/IIB_GMV-Testat/gmvtestat2.ui', self)
         self.konfigUI()
         
         self.show()

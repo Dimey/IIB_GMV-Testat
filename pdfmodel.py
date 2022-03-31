@@ -22,10 +22,11 @@ class PDFModel(FPDF):
         E = np.frompyfunc(lambda x: f'SchiebereglerE = {schieberegler}' in x, 1, 1)(werteStudent)
         return 3 - np.count_nonzero((E) | (F) | (G))
         
-    def __init__(self, df, ws, bg):
+    def __init__(self, df, ws, bg,img_dir):
         super().__init__('P','mm')
         self.data = df
         self.bestehensGrenze = bg
+        self.img_dir = img_dir
 
         # Meta data
         self.set_title(f"Testatbewertung für {df['Vorname']} {df['Nachname']}")
@@ -49,7 +50,7 @@ class PDFModel(FPDF):
 
     def header(self):
         # IIB Logo
-        self.image(name='Assets/iib_logo.png', x=160, y=22, w=25)
+        self.image(name=self.img_dir + '/iib_logo.png', x=160, y=22, w=25)
         # Font
         self.set_font(family='Arial', style='B', size=16)
         # Title

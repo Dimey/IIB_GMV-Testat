@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 import numpy as np
 from PyQt5.QtCore import QThread, pyqtSignal
@@ -7,6 +8,13 @@ from pdfmodel import PDFModel
 from pdfmodel2 import PDFModel2
 
 class TestatModel():
+
+    @classmethod
+    def resourcePath(cls, relative_path):
+        """ Get absolute path to resource, works for dev and for PyInstaller """
+        base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_path, relative_path)
+
     def __init__(self):
         super(TestatModel, self).__init__() 
         self.bestehensGrenze = 15
@@ -55,7 +63,9 @@ class TestatModel():
         self.bewertungsuebersicht.sort_values(by=['Nachname', 'Vorname'], inplace=True)
 
     def speichereBewertungsUebersichtAlsCSV(self):
-        self.bewertungsuebersicht.to_csv('Ressources/Testat1_Bewertungsuebersicht_SensibleDaten.csv',index=False)
+        save_dir = TestatModel.resourcePath("savefiles")
+        print(f'{save_dir}')
+        self.bewertungsuebersicht.to_csv(save_dir + '/Testat2_Bewertungsuebersicht.csv',index=False)
 
     def ladeBewertungsUebersichtAusCSV(self, pfad):
         self.bewertungsuebersicht = pd.read_csv(pfad).set_index('Matrikelnummer',drop=False).fillna('')
@@ -151,5 +161,6 @@ class TestatModel():
         ws = self.wertungsSchluessel
         bg = self.bestehensGrenze
         pfad = df['Pfad']
-        pdf = PDFModel2(df,ws,bg)
+        img_dir = TestatModel.resourcePath("imgs")
+        pdf = PDFModel2(df,ws,bg,img_dir)
         pdf.output(f"{pfad}{'/' if pfad != '' else 'Studenten ohne Abgabe/'}{matrikelNummer}.pdf")
