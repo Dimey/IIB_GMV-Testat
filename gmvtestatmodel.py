@@ -63,16 +63,14 @@ class TestatModel():
         self.bewertungsuebersicht.sort_values(by=['Nachname', 'Vorname'], inplace=True)
 
     def speichereBewertungsUebersichtAlsCSV(self):
-        save_dir = TestatModel.resourcePath("savefiles")
-        print(f'{save_dir}')
-        self.bewertungsuebersicht.to_csv(save_dir + '/Testat2_Bewertungsuebersicht.csv',index=False)
+        self.bewertungsuebersicht.to_csv('GMV Testat Tool/Testat2_Bewertungsuebersicht.csv',index=False)
 
     def ladeBewertungsUebersichtAusCSV(self, pfad):
         self.bewertungsuebersicht = pd.read_csv(pfad).set_index('Matrikelnummer',drop=False).fillna('')
 
     def pfadeAllerAbgaben(self, pfad):
         # Ordnername für die Kopie aller Abgaben
-        copyFolderName = f"Testatabgaben_Kopie"
+        copyFolderName = f"GMV Testat Tool/Testatabgaben_Kopie"
         if not os.path.isdir(copyFolderName): # Wenn noch keine Abgaben-Kopie vorhanden
             print("Kopie wurde angelegt.") # TODO: Infofenster nachrüsten
             copytree(f"{pfad}", copyFolderName)
@@ -163,4 +161,4 @@ class TestatModel():
         pfad = df['Pfad']
         img_dir = TestatModel.resourcePath("imgs")
         pdf = PDFModel2(df,ws,bg,img_dir)
-        pdf.output(f"{pfad}{'/' if pfad != '' else 'Studenten ohne Abgabe/'}{matrikelNummer}.pdf")
+        pdf.output(f"{pfad}{'/' if pfad != '' else 'GMV Testat Tool/Studenten ohne Abgabe/'}{matrikelNummer}.pdf")

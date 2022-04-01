@@ -162,7 +162,7 @@ class TestatController():
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])
 
     def erzeugePDF(self):
-        self.model.erzeugeOrdner('Studenten ohne Abgabe')
+        self.model.erzeugeOrdner('GMV Testat Tool/Studenten ohne Abgabe')
         self.model.exportPDF(self.geklickteMatrikelnummer)
         self.view.infoFenster(f'PDF erfolgreich exportiert.')
 
