@@ -602,196 +602,209 @@
       <x>10</x>
       <y>20</y>
       <width>511</width>
-      <height>161</height>
+      <height>171</height>
      </rect>
     </property>
     <property name="title">
      <string>Import</string>
     </property>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>391</width>
-       <height>121</height>
+       <width>491</width>
+       <height>131</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout_20">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetMinimumSize</enum>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Arbeitsverzeichnis:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="pfad_lineEdit">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pfad_btn">
+          <property name="text">
+           <string>Ändern</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="6,1">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Import Teilnehmerliste TUCaN:</string>
+           <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1,1">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetMinimumSize</enum>
             </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Import Teilnehmerliste Moodle:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Batch-Import Protokolle:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_4">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Import einzelner Protokolle:</string>
-            </property>
-           </widget>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout">
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Import Teilnehmerliste TUCaN:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Import Teilnehmerliste Moodle:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Batch-Import Protokolle:</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QPushButton" name="TucanListeLaden_btn">
+                <property name="text">
+                 <string>Laden</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="MoodleListeLaden_btn">
+                <property name="text">
+                 <string>Laden</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="BatchImportKpLaden_btn">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="text">
+                 <string>Laden</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <widget class="QLabel" name="label_6">
+                <property name="text">
+                 <string>Anzahl:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_8">
+                <property name="text">
+                 <string>Anzahl:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Anzahl:</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_4">
+              <item>
+               <widget class="QLabel" name="AnzahlTucanTeilnehmer_label">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="AnzahlMoodleTeilnehmer_label">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="AnzahlAbgaben_label">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <layout class="QVBoxLayout" name="verticalLayout_19" stretch="7,3">
+          <property name="spacing">
+           <number>10</number>
+          </property>
           <item>
-           <widget class="QPushButton" name="TucanListeLaden_btn">
-            <property name="text">
-             <string>Laden</string>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_18">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_11">
+              <item>
+               <widget class="QLabel" name="label_40">
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_9"/>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QPushButton" name="MoodleListeLaden_btn">
-            <property name="text">
-             <string>Laden</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="BatchImportKpLaden_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Laden</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="EinzelKpLaden_btn">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Laden</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Anzahl:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Anzahl:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Anzahl:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_9">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>Anzahl:</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
-          <item>
-           <widget class="QLabel" name="AnzahlTucanTeilnehmer_label">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="AnzahlMoodleTeilnehmer_label">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="AnzahlAbgaben_label">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QLabel" name="label_38">
+              <property name="text">
+               <string>Fehler:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="fehler_label">
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
        </layout>
       </item>
      </layout>
-    </widget>
-    <widget class="QLabel" name="label_38">
-     <property name="geometry">
-      <rect>
-       <x>410</x>
-       <y>100</y>
-       <width>51</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Fehler:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="fehler_label">
-     <property name="geometry">
-      <rect>
-       <x>460</x>
-       <y>100</y>
-       <width>41</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
     </widget>
    </widget>
    <widget class="QLabel" name="label_10">
@@ -833,7 +846,7 @@
     <property name="geometry">
      <rect>
       <x>730</x>
-      <y>190</y>
+      <y>200</y>
       <width>41</width>
       <height>21</height>
      </rect>
@@ -855,7 +868,7 @@
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>190</y>
+      <y>200</y>
       <width>181</width>
       <height>16</height>
      </rect>
@@ -870,7 +883,7 @@
       <x>530</x>
       <y>20</y>
       <width>261</width>
-      <height>161</height>
+      <height>171</height>
      </rect>
     </property>
     <property name="title">
@@ -882,7 +895,7 @@
        <x>10</x>
        <y>30</y>
        <width>241</width>
-       <height>116</height>
+       <height>131</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -978,7 +991,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../Sonstige Dateien/iib_Logo.qrc"/>
+  <include location="../iib_Logo.qrc"/>
  </resources>
  <connections/>
 </ui>

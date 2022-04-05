@@ -16,7 +16,8 @@ class TestatController():
         
     def initializeUI(self):
         # Setze Focus auf den Laden Button
-        self.view.TucanListeLaden_btn.setFocus();
+        self.view.TucanListeLaden_btn.setFocus()
+        self.view.zeigeVerzeichnisPfad(self.model.workingDir)
         
     def connectSignals(self):
         self.view.TucanListeLaden_btn.clicked.connect(self.oeffneTucanListe)
@@ -41,6 +42,7 @@ class TestatController():
         self.view.pdfExport_btn.clicked.connect(self.erzeugePDF)
         self.view.batchPDF_btn.clicked.connect(self.erzeugeBatchPDF)
         self.view.bemerkung_plainTextEdit.textChanged.connect(partial(self.speichereBemerkungTextEdit, self.view.bemerkung_plainTextEdit))
+        self.view.pfad_btn.clicked.connect(self.aendereVerzeichnisPfad)
 
     def oeffneTucanListe(self):
         try:
@@ -74,7 +76,7 @@ class TestatController():
             print('Die MoodleListe konnte nicht geladen werden.')
 
     def importiereAlleAbgaben(self):
-        path = self.view.folderDialog()
+        path = self.view.folderDialog('Öffne den Ordner mit den Moodle-Abgaben')
         if path:
             allePfadeZuAbgaben = self.model.pfadeAllerAbgaben(path)
             self.view.zeigeLadeView("Batch Import")
@@ -160,6 +162,12 @@ class TestatController():
 
     def rufeOrdnerImFileExplorer(self):
         self.view.zeigeOrdnerImFinder(self.geklickteZeile['Pfad'])
+
+    def aendereVerzeichnisPfad(self):
+        path = self.view.folderDialog('Wähle einen Ort für das Arbeitsverzeichnis')
+        if path:
+            self.model.aendereVerzeichnisPfad(path)
+            self.view.zeigeVerzeichnisPfad(path)
 
     def erzeugePDF(self):
         self.model.erzeugeOrdner('GMV Testat Tool/Studenten ohne Abgabe')

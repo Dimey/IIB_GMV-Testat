@@ -56,8 +56,8 @@ class TestatView(QtWidgets.QMainWindow):
             f'Öffne die {ext}-Datei', 
             filter = f'{ext}-Dateien k(*.{ext}) ;; Alle Dateien (*)')
 
-    def folderDialog(self):
-        return QtWidgets.QFileDialog.getExistingDirectory(self, caption='Öffne den Ordner mit den Moodle-Abgaben')
+    def folderDialog(self, caption):
+        return QtWidgets.QFileDialog.getExistingDirectory(self, caption=caption)
 
     def fuelleBewertungsUebersicht(self, bewertungsuebersicht):
         self.aktiviereUIElementeNachUebersichtBefuellung()
@@ -87,6 +87,9 @@ class TestatView(QtWidgets.QMainWindow):
 
     def fuelleLabel(self, label, newValue):
         label.setText(f'{newValue}')
+
+    def zeigeVerzeichnisPfad(self, pfad):
+        self.pfad_lineEdit.setText(pfad)
 
     def fuelleLineEdit(self, lineEdit, newValue):
         if isinstance(newValue, str):

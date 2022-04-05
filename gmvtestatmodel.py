@@ -20,6 +20,11 @@ class TestatModel():
         self.bestehensGrenze = 15
         self.wertungsSchluessel = PDFModel2.wertungsSchluessel
         self.variationsMatrix = PDFModel2.variationsMatrix
+        self.workingDir = os.path.abspath(os.getcwd())
+
+    def aendereVerzeichnisPfad(self, pfad):
+        os.chdir(pfad)
+        self.workingDir = pfad
 
     def erzeugeOrdner(self, pfad):
         if not os.path.isdir(pfad):
