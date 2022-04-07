@@ -889,9 +889,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
+      <y>60</y>
       <width>511</width>
-      <height>161</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="font">
@@ -906,9 +906,9 @@
      <property name="geometry">
       <rect>
        <x>11</x>
-       <y>21</y>
+       <y>20</y>
        <width>491</width>
-       <height>131</height>
+       <height>91</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,0,0,1,0,1">
@@ -953,21 +953,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>8</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Import einzelner Protokolle:</string>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
@@ -1001,21 +986,6 @@
         </item>
         <item>
          <widget class="QPushButton" name="BatchImportKpLaden_btn">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>8</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Laden</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="EinzelKpLaden_btn">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -1069,21 +1039,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QLabel" name="label_9">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="font">
-           <font>
-            <pointsize>8</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Anzahl:</string>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
@@ -1124,18 +1079,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QLabel" name="label_13">
-          <property name="font">
-           <font>
-            <pointsize>8</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
@@ -1166,13 +1109,6 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QLabel" name="label_42">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
        </layout>
       </item>
       <item>
@@ -1198,13 +1134,6 @@
             <pointsize>8</pointsize>
            </font>
           </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_45">
           <property name="text">
            <string/>
           </property>
@@ -1456,6 +1385,39 @@
      </item>
     </layout>
    </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>491</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <item>
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Arbeitsverzeichnis:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="pfad_lineEdit">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pfad_btn">
+       <property name="text">
+        <string>Ändern</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <action name="actionHallo">
    <property name="text">
@@ -1464,7 +1426,7 @@
   </action>
  </widget>
  <resources>
-  <include location="iib_Logo.qrc"/>
+  <include location="../iib_Logo.qrc"/>
  </resources>
  <connections/>
 </ui>
