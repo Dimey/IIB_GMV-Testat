@@ -60,7 +60,7 @@ class TestatView(QtWidgets.QMainWindow):
         return QtWidgets.QFileDialog.getExistingDirectory(self, caption=caption)
 
     def fuelleBewertungsUebersicht(self, bewertungsuebersicht):
-        self.aktiviereUIElementeNachUebersichtBefuellung()
+        self.BatchImportKpLaden_btn.setEnabled(True)
         self.BewertungsUebersicht_table.setRowCount(bewertungsuebersicht.shape[0])
         bewertungsuebersichtArray = bewertungsuebersicht.to_numpy()
         for idx, value in np.ndenumerate(bewertungsuebersichtArray):
@@ -100,11 +100,10 @@ class TestatView(QtWidgets.QMainWindow):
     def aktiviereUIElement(self, element, istAktiv):
         element.setEnabled(istAktiv)
 
-    def aktiviereUIElementeNachUebersichtBefuellung(self):
+    def aktiviereUIElementeNachAbgabenImport(self):
         self.grenze_label.setEnabled(True)
         self.grenze_spinBox.setEnabled(True)
         self.Speichern_btn.setEnabled(True)
-        self.BatchImportKpLaden_btn.setEnabled(True)
         self.batchPDF_btn.setEnabled(True)
 
     def fuelleBewertungsDetails(self, geklickteZeile):

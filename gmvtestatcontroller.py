@@ -9,6 +9,7 @@ class TestatController():
 
         self.geklickteMatrikelnummer = 0
         
+        self.initializeModel()
         self.initializeUI()
         
         # Connect signals and slots
@@ -18,6 +19,9 @@ class TestatController():
         # Setze Focus auf den Laden Button
         self.view.TucanListeLaden_btn.setFocus()
         self.view.zeigeVerzeichnisPfad(self.model.workingDir)
+
+    def initializeModel(self):
+        pass
         
     def connectSignals(self):
         self.view.TucanListeLaden_btn.clicked.connect(self.oeffneTucanListe)
@@ -78,6 +82,8 @@ class TestatController():
     def importiereAlleAbgaben(self):
         path = self.view.folderDialog('Öffne den Ordner mit den Moodle-Abgaben')
         if path:
+            self.model.erzeugeOrdner('GMV Testat Tool')
+            self.model.erzeugeOrdner('GMV Testat Tool/Save Files')
             allePfadeZuAbgaben = self.model.pfadeAllerAbgaben(path)
             self.view.zeigeLadeView("Batch Import")
             self.importThread = BatchImportThread(self.model, allePfadeZuAbgaben)
@@ -85,6 +91,7 @@ class TestatController():
             self.importThread._setModelSignal.connect(self.setModelAndViewAfterImport)
             self.importThread.start()
             self.view.fuelleLabel(self.view.AnzahlAbgaben_label, len(allePfadeZuAbgaben))
+            self.view.aktiviereUIElementeNachAbgabenImport()
 
     def setModelAndViewAfterImport(self, model, fehlerAnzahl):  
         self.model = model

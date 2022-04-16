@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from PyQt5.QtCore import QThread, pyqtSignal
 from shutil import copytree
+from datetime import datetime
 from pdfmodel import PDFModel
 from pdfmodel2 import PDFModel2
 
@@ -68,7 +69,9 @@ class TestatModel():
         self.bewertungsuebersicht.sort_values(by=['Nachname', 'Vorname'], inplace=True)
 
     def speichereBewertungsUebersichtAlsCSV(self):
-        self.bewertungsuebersicht.to_csv('GMV Testat Tool/Testat2_Bewertungsuebersicht.csv',index=False)
+        now = datetime.now()
+        date_time = now.strftime("date%d%m%Y_time%H%M%S")
+        self.bewertungsuebersicht.to_csv(f'GMV Testat Tool/Save Files/savefile_{date_time}.csv',index=False)
 
     def ladeBewertungsUebersichtAusCSV(self, pfad):
         self.bewertungsuebersicht = pd.read_csv(pfad).set_index('Matrikelnummer',drop=False).fillna('')

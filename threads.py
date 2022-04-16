@@ -9,7 +9,7 @@ class PDFGenerationThread(QThread):
         self.testatModel = testatModel
     
     def run(self):
-        self.testatModel.erzeugeOrdner('Studenten ohne Abgabe')
+        self.testatModel.erzeugeOrdner('GMV Testat Tool/Studenten ohne Abgabe')
         df = self.testatModel.bewertungsuebersicht
         matrikelNummern = df[(df['Punkte'] != '')].index
         anzahlPDFs = len(matrikelNummern)
