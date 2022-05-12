@@ -1,31 +1,33 @@
 import os
 import sys
-import subprocess  
-import numpy as np 
-from PyQt5 import QtGui, QtCore, QtWidgets, uic    
+import subprocess
+import numpy as np
+from PyQt5 import QtGui, QtCore, QtWidgets, uic
 from gmvtestatcontroller import TestatController
 from gmvtestatmodel import TestatModel
 from gmvladeview import LadeView
+
 
 class TestatView(QtWidgets.QMainWindow):
     def __init__(self):
         super(TestatView, self).__init__()
         ui_dir = TestatModel.resourcePath("ui")
-        if os.name == 'nt':
-            uic.loadUi(ui_dir + '/gmvtestat2_win.ui',self)
+        if os.name == "nt":
+            uic.loadUi(ui_dir + "/gmvtestat2_win.ui", self)
         else:
-            uic.loadUi(ui_dir + '/gmvtestat2.ui',self)
-            # uic.loadUi('/Users/dimitrihaas/Library/Mobile Documents/com~apple~CloudDocs/TU Darmstadt/MSc Computional Engineering/Semester 3/Hiwi 2021/IIB_GMV-Testat/gmvtestat2.ui', self)
+            uic.loadUi(ui_dir + "/gmvtestat2.ui", self)
         self.konfigUI()
-        
+
         self.show()
-        
+
     def konfigUI(self):
         # Setze feste Fenstergröße
-        self.setFixedSize(800,990);
+        self.setFixedSize(800, 990)
         # Verhindere nicht-numerische Eingaben
         eingabeChecker = QtGui.QDoubleValidator()
-        eingabeChecker.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
+        eingabeChecker.setLocale(
+            QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates)
+        )
         self.krit1_lineEdit.setValidator(eingabeChecker)
         self.krit2_lineEdit.setValidator(eingabeChecker)
         self.krit3_lineEdit.setValidator(eingabeChecker)
@@ -39,7 +41,7 @@ class TestatView(QtWidgets.QMainWindow):
         self.abzug2_lineEdit.setValidator(eingabeChecker)
 
         # Setze die Einstellungen für Spaltbreiten der Bewertungsübersicht
-        header = self.BewertungsUebersicht_table.horizontalHeader()       
+        header = self.BewertungsUebersicht_table.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.Stretch)
@@ -52,9 +54,11 @@ class TestatView(QtWidgets.QMainWindow):
         self.abzug2_lineEdit.setStyleSheet("background-color: rgb(255, 126, 121);")
 
     def fileDialog(self, ext):
-        return QtWidgets.QFileDialog.getOpenFileName(self, 
-            f'Öffne die {ext}-Datei', 
-            filter = f'{ext}-Dateien k(*.{ext}) ;; Alle Dateien (*)')
+        return QtWidgets.QFileDialog.getOpenFileName(
+            self,
+            f"Öffne die {ext}-Datei",
+            filter=f"{ext}-Dateien k(*.{ext}) ;; Alle Dateien (*)",
+        )
 
     def folderDialog(self, caption):
         return QtWidgets.QFileDialog.getExistingDirectory(self, caption=caption)
@@ -65,28 +69,28 @@ class TestatView(QtWidgets.QMainWindow):
         bewertungsuebersichtArray = bewertungsuebersicht.to_numpy()
         for idx, value in np.ndenumerate(bewertungsuebersichtArray):
             if isinstance(value, float):
-                value = f'{value:g}'
+                value = f"{value:g}"
             item = QtWidgets.QTableWidgetItem(str(value))
-            if idx[1]<6:
-                self.BewertungsUebersicht_table.setItem(idx[0],idx[1],item)
+            if idx[1] < 6:
+                self.BewertungsUebersicht_table.setItem(idx[0], idx[1], item)
 
     def setzeBewertungsUebersichtZelle(self, row, column, newValue):
         item = QtWidgets.QTableWidgetItem(str(newValue))
         self.BewertungsUebersicht_table.setItem(row, column, item)
 
     def falscheListeFenster(self, listtyp):
-        text = f'''Bitte wähle die {listtyp}-Liste aus!
+        text = f"""Bitte wähle die {listtyp}-Liste aus!
 
         Hinweis:
         Der Dateiname muss \'{listtyp}\' enthalten.
-        Die Groß-/Kleinschreibung ist dabei unerheblich.'''
+        Die Groß-/Kleinschreibung ist dabei unerheblich."""
         self.infoFenster(text)
 
     def zeigeLadenHaken(self, button):
-        button.setText(u'Laden \u2714')
+        button.setText("Laden \u2714")
 
     def fuelleLabel(self, label, newValue):
-        label.setText(f'{newValue}')
+        label.setText(f"{newValue}")
 
     def zeigeVerzeichnisPfad(self, pfad):
         self.pfad_lineEdit.setText(pfad)
@@ -95,7 +99,7 @@ class TestatView(QtWidgets.QMainWindow):
         if isinstance(newValue, str):
             lineEdit.setText(newValue)
         else:
-            lineEdit.setText(f'{newValue:g}')
+            lineEdit.setText(f"{newValue:g}")
 
     def aktiviereUIElement(self, element, istAktiv):
         element.setEnabled(istAktiv)
@@ -118,17 +122,17 @@ class TestatView(QtWidgets.QMainWindow):
         self.fuelleLineEdit(self.krit9_lineEdit, geklickteZeile["Kriterium 9"])
         self.fuelleLineEdit(self.abzug1_lineEdit, geklickteZeile["Abzug 1"])
         self.fuelleLineEdit(self.abzug2_lineEdit, geklickteZeile["Abzug 2"])
-        self.bemerkung_plainTextEdit.setPlainText(geklickteZeile['Bemerkungen'])
-        self.setzePunktestandLabel(geklickteZeile['Punkte'])
+        self.bemerkung_plainTextEdit.setPlainText(geklickteZeile["Bemerkungen"])
+        self.setzePunktestandLabel(geklickteZeile["Punkte"])
 
     def setzePunktestandLabel(self, punkte):
-        if punkte != '':
-            punkte = f'{float(punkte):g}'
-        text = f'Gesamtpunktzahl: {punkte} / 30 P'
+        if punkte != "":
+            punkte = f"{float(punkte):g}"
+        text = f"Gesamtpunktzahl: {punkte} / 30 P"
         self.gesamtpunktzahl_label.setText(text)
 
     def zeigeOrdnerImFinder(self, pfad):
-        if os.name == 'nt':
+        if os.name == "nt":
             winpfad = pfad.replace("/", "\\")
             subprocess.call(f"explorer {winpfad}")
         else:
@@ -136,17 +140,18 @@ class TestatView(QtWidgets.QMainWindow):
 
     def infoFenster(self, text):
         box = QtWidgets.QMessageBox(self)
-        box.setWindowTitle('Info')
+        box.setWindowTitle("Info")
         box.setText(text)
         box.exec()
 
     def zeigeLadeView(self, title):
         self.ladeView = LadeView(title)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    app.setStyle('macintosh')
-    
+    app.setStyle("macintosh")
+
     view = TestatView()
     model = TestatModel()
     controller = TestatController(model, view)
